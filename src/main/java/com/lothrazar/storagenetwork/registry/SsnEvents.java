@@ -33,9 +33,12 @@ public class SsnEvents {
 
     Level level = event.getLevel();
     if (!level.isClientSide) {
-      return;
+      return; // dont save client data; server side only from here on
     }
     Player player = event.getEntity();
+    if (!player.isCrouching()) {
+      return; // match with 1.12 pr, only put facades when crouching
+    }
     ItemStack held = player.getItemInHand(event.getHand());
     TileCable cable = TileCable.getTileCable(level, event.getPos());
     if (cable != null) {

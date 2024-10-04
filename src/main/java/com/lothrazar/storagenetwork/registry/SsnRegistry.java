@@ -16,6 +16,8 @@ import com.lothrazar.storagenetwork.block.cable.link.TileCableLink;
 import com.lothrazar.storagenetwork.block.cable.linkfilter.BlockCableFilter;
 import com.lothrazar.storagenetwork.block.cable.linkfilter.ContainerCableFilter;
 import com.lothrazar.storagenetwork.block.cable.linkfilter.TileCableFilter;
+import com.lothrazar.storagenetwork.block.cable.processing.BlockCableProcess;
+import com.lothrazar.storagenetwork.block.cable.processing.TileCableProcess;
 import com.lothrazar.storagenetwork.block.collection.BlockCollection;
 import com.lothrazar.storagenetwork.block.collection.ContainerCollectionFilter;
 import com.lothrazar.storagenetwork.block.collection.TileCollection;
@@ -65,6 +67,7 @@ public class SsnRegistry {
     public static final RegistryObject<Block> IMPORT_FILTER_KABEL = BLOCKS.register("import_filter_kabel", () -> new BlockCableImportFilter());
     public static final RegistryObject<Block> FILTER_KABEL = BLOCKS.register("filter_kabel", () -> new BlockCableFilter());
     public static final RegistryObject<Block> EXPORT_KABEL = BLOCKS.register("export_kabel", () -> new BlockCableExport());
+    public static final RegistryObject<Block> PROCESS_KABEL = BLOCKS.register("process_kabel", () -> new BlockCableProcess());
     public static final RegistryObject<Block> INVENTORY = BLOCKS.register("inventory", () -> new BlockInventory());
     public static final RegistryObject<Block> EXCHANGE = BLOCKS.register("exchange", () -> new BlockExchange());
     public static final RegistryObject<Block> COLLECTOR = BLOCKS.register("collector", () -> new BlockCollection());
@@ -82,6 +85,7 @@ public class SsnRegistry {
     public static final RegistryObject<Item> IFK = ITEMS.register("import_filter_kabel", () -> new BlockItem(Blocks.IMPORT_FILTER_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> FK = ITEMS.register("filter_kabel", () -> new BlockItem(Blocks.FILTER_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> EK = ITEMS.register("export_kabel", () -> new BlockItem(Blocks.EXPORT_KABEL.get(), new Item.Properties()));
+    //  public static final RegistryObject<Item> PK = ITEMS.register("process_kabel", () -> new BlockItem(Blocks.PROCESS_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> EXCHANGE = ITEMS.register("exchange", () -> new BlockItem(Blocks.EXCHANGE.get(), new Item.Properties()));
     public static final RegistryObject<Item> COL = ITEMS.register("collector", () -> new BlockItem(Blocks.COLLECTOR.get(), new Item.Properties()));
     public static final RegistryObject<ItemUpgrade> STACK_UPGRADE = ITEMS.register("stack_upgrade", () -> new ItemUpgrade(new Item.Properties()));
@@ -111,10 +115,8 @@ public class SsnRegistry {
     public static final RegistryObject<BlockEntityType<TileCableExport>> EXPORT_KABEL = TILES.register("export_kabel", () -> BlockEntityType.Builder.of(TileCableExport::new, Blocks.EXPORT_KABEL.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileExchange>> EXCHANGE = TILES.register("exchange", () -> BlockEntityType.Builder.of(TileExchange::new, Blocks.EXCHANGE.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCollection>> COLLECTOR = TILES.register("collector", () -> BlockEntityType.Builder.of(TileCollection::new, Blocks.COLLECTOR.get()).build(null));
-
-
+    public static final RegistryObject<BlockEntityType<TileCableProcess>> PROCESS_KABEL = TILES.register("process_kabel", () -> BlockEntityType.Builder.of(TileCableProcess::new, Blocks.PROCESS_KABEL.get()).build(null));
   }
-
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
   public static class Menus {
