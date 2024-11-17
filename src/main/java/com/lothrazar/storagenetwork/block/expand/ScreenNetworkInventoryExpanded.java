@@ -3,6 +3,7 @@ package com.lothrazar.storagenetwork.block.expand;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
+import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.block.inventory.ContainerNetworkInventory;
 import com.lothrazar.storagenetwork.block.inventory.ScreenNetworkInventory;
 import com.lothrazar.storagenetwork.block.inventory.TileInventory;
@@ -19,8 +20,7 @@ import net.minecraftforge.fml.ModList;
 
 import java.util.List;
 
-public class ScreenNetworkInventoryExpanded extends AbstractContainerScreen<ContainerNetworkInventoryExpanded>
-        implements IGuiNetwork {
+public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<ContainerNetworkInventoryExpanded> {//AbstractContainerScreen<ContainerNetworkInventoryExpanded> implements IGuiNetwork {
 
   protected int HEIGHT = 256;
   public int WIDTH = 176;

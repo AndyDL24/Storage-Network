@@ -4,6 +4,7 @@ import java.util.List;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
+import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
 import com.lothrazar.storagenetwork.gui.NetworkWidget.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.TextboxInteger;
@@ -24,7 +25,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 
 
-public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNetworkInventory> implements IGuiNetwork {
+public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetworkInventory> {//AbstractContainerScreen<ContainerNetworkInventory> implements IGuiNetwork {
 
   protected int HEIGHT = 256;
   public int WIDTH = 176;
@@ -174,9 +175,6 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
   public void drawGradient(GuiGraphics ms, int x, int y, int x2, int y2, int u, int v) {
     ms.fillGradient(x, y, x2, y2, u, v);
   }
-
-
-
 
   @Override
   public void setStacks(List<ItemStack> stacks) {
