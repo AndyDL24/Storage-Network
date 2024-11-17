@@ -228,8 +228,8 @@ public class ScreenNetworkCraftingRemote extends AbstractContainerScreen<Contain
     return super.isHovering(x, y, width, height, mouseX, mouseY);
   }
 
-  @Override
-  public void syncDataToServer() {
-    PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(null, getDownwards(), getSort(), this.isJeiSearchSynced(), this.getAutoFocus()));
-  }
+//  @Override
+//  public void syncDataToServer() {
+//    PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(null, getDownwards(), getSort(), this.isJeiSearchSynced(), this.getAutoFocus()));
+//  }
 }

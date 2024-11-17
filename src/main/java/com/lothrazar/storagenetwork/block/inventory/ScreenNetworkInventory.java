@@ -23,9 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 
-/**
- * Base class for Request table inventory and Remote inventory
- */
+
 public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNetworkInventory> implements IGuiNetwork {
 
   protected int HEIGHT = 256;
@@ -46,31 +44,6 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
   public NetworkScreenSize getSize() {
     return NetworkScreenSize.LARGE;
   }
-  @Override
-  public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
-    ms.renderTooltip(font, stack, mousex, mousey);
-  }
-
-  @Override
-  public void drawGradient(GuiGraphics ms, int x, int y, int x2, int y2, int u, int v) {
-    ms.fillGradient(x, y, x2, y2, u, v);
-  }
-
-  @Override
-  public NetworkWidget getNetworkWidget() {
-    return network;
-  }
-
-  @Override
-  public void setStacks(List<ItemStack> stacks) {
-    network.stacks = stacks;
-  }
-
-  @Override
-  public int getGuiTopFixJei() {
-    return super.getGuiTop() + topOffset;
-  }
-
   @Override
   public void init() {
     super.init();
@@ -101,36 +74,6 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
     network.searchBar.render(ms, mouseX, mouseY, partialTicks);
     network.render();
   }
-
-  @Override
-  public void syncDataToServer() {
-    PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(getPos(), getDownwards(), getSort(), isJeiSearchSynced(), tile.getAutoFocus()));
-  }
-
-  @Override
-  public boolean getDownwards() {
-    return tile.isDownwards();
-  }
-
-  @Override
-  public void setDownwards(boolean d) {
-    tile.setDownwards(d);
-  }
-
-  @Override
-  public EnumSortType getSort() {
-    return tile.getSort();
-  }
-
-  @Override
-  public void setSort(EnumSortType s) {
-    tile.setSort(s);
-  }
-
-  public BlockPos getPos() {
-    return tile.getBlockPos();
-  }
-
   @Override
   public void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
     int xCenter = (width - imageWidth) / 2;
@@ -140,17 +83,6 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
 
-  @Override
-  public void renderLabels(GuiGraphics ms, int mouseX, int mouseY) {
-    network.drawGuiContainerForegroundLayer(ms, mouseX, mouseY, font);
-  }
-
-  boolean isScrollable(double x, double y) {
-    int scrollHeight = 135;
-    return isHovering(0, 0,
-        this.width - 8, scrollHeight,
-        x, y);
-  }
 
   /**
    * Negative is down; positive is up.
@@ -216,9 +148,69 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
     return false;
   }
 
+
+
+
+// all the IGUINETWORK implementations
+
+
+
+//  @Override
+//  public void syncDataToServer() {
+//    PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(getPos(), getDownwards(), getSort(), isJeiSearchSynced(), getAutoFocus()));
+//  }
+
   @Override
-  public boolean isInRegion(int x, int y, int width, int height, double mouseX, double mouseY) {
-    return super.isHovering(x, y, width, height, mouseX, mouseY);
+  public void renderLabels(GuiGraphics ms, int mouseX, int mouseY) {
+    network.drawGuiContainerForegroundLayer(ms, mouseX, mouseY, font);
+  }
+
+  @Override
+  public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
+    ms.renderTooltip(font, stack, mousex, mousey);
+  }
+
+  @Override
+  public void drawGradient(GuiGraphics ms, int x, int y, int x2, int y2, int u, int v) {
+    ms.fillGradient(x, y, x2, y2, u, v);
+  }
+
+
+
+
+  @Override
+  public void setStacks(List<ItemStack> stacks) {
+    network.stacks = stacks;
+  }
+
+  @Override
+  public int getGuiTopFixJei() {
+    return super.getGuiTop() + topOffset;
+  }
+
+  @Override
+  public boolean getDownwards() {
+    return tile.isDownwards();
+  }
+
+  @Override
+  public void setDownwards(boolean d) {
+    tile.setDownwards(d);
+  }
+
+  @Override
+  public EnumSortType getSort() {
+    return tile.getSort();
+  }
+
+  @Override
+  public void setSort(EnumSortType s) {
+    tile.setSort(s);
+  }
+
+  @Override
+  public BlockPos getPos() {
+    return tile.getBlockPos();
   }
 
   @Override
@@ -240,4 +232,20 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
   public void setAutoFocus(boolean b) {
     tile.setAutoFocus(b);
   }
+
+  boolean isScrollable(double x, double y) {
+    int scrollHeight = 135;
+    return isHovering(0, 0,
+            this.width - 8, scrollHeight,
+            x, y);
+  }
+  @Override
+  public boolean isInRegion(int x, int y, int width, int height, double mouseX, double mouseY) {
+    return super.isHovering(x, y, width, height, mouseX, mouseY);
+  }
+  @Override
+  public NetworkWidget getNetworkWidget() {
+    return network;
+  }
+
 }

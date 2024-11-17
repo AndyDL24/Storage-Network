@@ -11,8 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 
-public class ContainerNetworkInventoryExpanded extends ContainerNetworkInventory {
-private TileInventoryExpanded tile;
+public class ContainerNetworkInventoryExpanded extends ContainerNetwork {
+  TileInventoryExpanded tile;
   public ContainerNetworkInventoryExpanded(int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {
 
     this(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), windowId, world, pos, playerInv, player);
@@ -21,7 +21,7 @@ private TileInventoryExpanded tile;
 
   }
   public ContainerNetworkInventoryExpanded(MenuType<?> menuType, int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {
-    super(menuType, windowId,world,pos,playerInv,player);
+    super(menuType, windowId);
     tile = (TileInventoryExpanded) world.getBlockEntity(pos);
       this.yPlayer = 174 +128; //////////////////
     this.playerInv = playerInv;
