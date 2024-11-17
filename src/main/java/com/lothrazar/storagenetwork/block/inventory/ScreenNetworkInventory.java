@@ -28,21 +28,24 @@ import net.minecraftforge.fml.ModList;
  */
 public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNetworkInventory> implements IGuiNetwork {
 
-  private static final int HEIGHT = 256;
-  public static final int WIDTH = 176;
+  protected int HEIGHT = 256;
+  public int WIDTH = 176;
   private final ResourceLocation texture = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/inventory.png");
-  final NetworkWidget network;
+  protected final NetworkWidget network;
   private TileInventory tile;
   private int topOffset;
 
   public ScreenNetworkInventory(ContainerNetworkInventory container, Inventory inv, Component name) {
     super(container, inv, name);
     tile = container.tile;
-    network = new NetworkWidget(this, NetworkScreenSize.LARGE);
-    imageWidth = WIDTH;
+    network = new NetworkWidget(this, getSize());
     imageHeight = HEIGHT;
+    imageWidth = WIDTH;
   }
 
+  public NetworkScreenSize getSize() {
+    return NetworkScreenSize.LARGE;
+  }
   @Override
   public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
     ms.renderTooltip(font, stack, mousex, mousey);
@@ -71,7 +74,8 @@ public class ScreenNetworkInventory extends AbstractContainerScreen<ContainerNet
   @Override
   public void init() {
     super.init();
-    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 160, width = 85;
+    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + network.networkHeight(), width = 85;
+
     network.searchBar = new EditBox(font,
         searchLeft, searchTop,
         width, font.lineHeight, null);

@@ -171,7 +171,7 @@ public class ScreenCableImportFilter extends AbstractContainerScreen<ContainerCa
     }
   }
 
-  public static final int SLOT_SIZE = SsnConsts.SLOT_SIZE;;
+  public static final int SLOT_SIZE = SsnConsts.SQ;;
 
   @Override
   protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {

@@ -7,6 +7,7 @@ import com.lothrazar.storagenetwork.block.cable.inputfilter.ScreenCableImportFil
 import com.lothrazar.storagenetwork.block.cable.linkfilter.ScreenCableFilter;
 import com.lothrazar.storagenetwork.block.collection.ScreenCollectionFilter;
 import com.lothrazar.storagenetwork.block.inventory.ScreenNetworkInventory;
+import com.lothrazar.storagenetwork.block.expand.ScreenNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
 import com.lothrazar.storagenetwork.item.remote.ScreenNetworkCraftingRemote;
 import com.lothrazar.storagenetwork.item.remote.ScreenNetworkRemote;
@@ -62,6 +63,7 @@ public class StorageNetworkMod {
     MenuScreens.register(SsnRegistry.Menus.INVENTORY_REMOTE.get(), ScreenNetworkRemote::new);
     MenuScreens.register(SsnRegistry.Menus.CRAFTING_REMOTE.get(), ScreenNetworkCraftingRemote::new);
     MenuScreens.register(SsnRegistry.Menus.INVENTORY.get(), ScreenNetworkInventory::new);
+    MenuScreens.register(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), ScreenNetworkInventoryExpanded::new);
     MenuScreens.register(SsnRegistry.Menus.COLLECTOR.get(), ScreenCollectionFilter::new);
   }
 

@@ -6,6 +6,8 @@ import com.lothrazar.storagenetwork.registry.SsnRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.level.Level;
 
 public class ContainerNetworkInventory extends ContainerNetwork {
@@ -13,7 +15,11 @@ public class ContainerNetworkInventory extends ContainerNetwork {
   final TileInventory tile;
 
   public ContainerNetworkInventory(int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {
-    super(SsnRegistry.Menus.INVENTORY.get(), windowId);
+    this(SsnRegistry.Menus.INVENTORY.get(), windowId, world, pos, playerInv, player);
+  }
+
+  public ContainerNetworkInventory(MenuType<?> menuType, int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {
+    super(menuType, windowId);
     tile = (TileInventory) world.getBlockEntity(pos);
     this.playerInv = playerInv;
     bindPlayerInvo(this.playerInv);

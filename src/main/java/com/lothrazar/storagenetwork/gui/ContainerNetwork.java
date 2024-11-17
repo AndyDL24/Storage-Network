@@ -9,6 +9,7 @@ import com.lothrazar.storagenetwork.block.main.TileMain;
 import com.lothrazar.storagenetwork.capability.handler.ItemStackMatcher;
 import com.lothrazar.storagenetwork.network.StackRefreshClientMessage;
 import com.lothrazar.storagenetwork.registry.PacketRegistry;
+import com.lothrazar.storagenetwork.util.SsnConsts;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,6 +44,8 @@ public abstract class ContainerNetwork extends AbstractContainerMenu {
   protected Player player;
   protected CraftingRecipe recipeCurrent;
   public NetworkCraftingInventory matrix;
+  protected int xPlayer = 8;
+  protected int yPlayer = 174;
 
   protected ContainerNetwork(MenuType<?> type, int id) {
     super(type, id);
@@ -68,7 +71,7 @@ public abstract class ContainerNetwork extends AbstractContainerMenu {
     //player inventory
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 9; ++j) {
-        Slot slot = addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 174 + i * 18));
+        Slot slot = addSlot(new Slot(playerInv, j + i * 9 + 9, xPlayer + j * SsnConsts.SQ, yPlayer + i * SsnConsts.SQ));
         playerSlots.add(slot);
       }
     }
@@ -85,7 +88,7 @@ public abstract class ContainerNetwork extends AbstractContainerMenu {
   public void bindHotbar() {
     //player hotbar
     for (int i = 0; i < 9; ++i) {
-      Slot slot = addSlot(new Slot(playerInv, i, 8 + i * 18, 232));
+      Slot slot = addSlot(new Slot(playerInv, i, xPlayer + i * SsnConsts.SQ, yPlayer + 4 + 3 * SsnConsts.SQ)); // 232
       playerSlots.add(slot);
     }
   }
@@ -95,7 +98,7 @@ public abstract class ContainerNetwork extends AbstractContainerMenu {
     //3x3 crafting grid
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 3; ++j) {
-        Slot slot = addSlot(new Slot(matrix, index++, 8 + j * 18, 110 + i * 18));
+        Slot slot = addSlot(new Slot(matrix, index++, 8 + j * SsnConsts.SQ, 110 + i * SsnConsts.SQ));
         playerSlots.add(slot);
       }
     }

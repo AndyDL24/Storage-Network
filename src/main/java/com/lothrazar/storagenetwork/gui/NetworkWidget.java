@@ -16,6 +16,7 @@ import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
 import com.lothrazar.storagenetwork.network.InsertMessage;
 import com.lothrazar.storagenetwork.network.RequestMessage;
 import com.lothrazar.storagenetwork.registry.PacketRegistry;
+import com.lothrazar.storagenetwork.util.SsnConsts;
 import com.lothrazar.storagenetwork.util.UtilTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -52,6 +53,10 @@ public class NetworkWidget {
   private int maxPage = 1;
   private int lines = 4;
   private final int columns = 9;
+  //
+  public int networkHeight = 160;
+  protected int xNetwork = 8;
+  protected int yNetwork = 10;
 
   @Deprecated
   public NetworkWidget(IGuiNetwork gui) {
@@ -60,30 +65,28 @@ public class NetworkWidget {
 
   public NetworkWidget(IGuiNetwork gui, NetworkScreenSize size) {
     this.gui = gui;
-    switch (size) {
-      case LARGE:
-        setLines(8);
-        setFieldHeight(180 - 8); // the jei -8 gets fixed here now
-      break;
-      case NORMAL:
-        setLines(4);
-        setFieldHeight(90);
-      break;
-    }
     stacks = Lists.newArrayList();
     slots = Lists.newArrayList();
-    PacketRegistry.INSTANCE.sendToServer(new RequestMessage());
-    lastClick = System.currentTimeMillis();
     switch (size) {
       case LARGE:
+        networkHeight = 160;
         setLines(8);
-        setFieldHeight(180 - 8); // offset is important 
+        setFieldHeight(172);
       break;
       case NORMAL:
+        // networkHeight unused?
         setLines(4);
         setFieldHeight(90);
       break;
+      case EXPANDED:
+        networkHeight = 160 + 128; // was 160;
+        setLines(3 * 8 - 2); // the number of rows that can fit
+//        setFieldHeight(180+180);
+        this.yNetwork = -118; // :: test
+      break;
     }
+    PacketRegistry.INSTANCE.sendToServer(new RequestMessage());
+    lastClick = System.currentTimeMillis();
   }
 
   public List<ItemStack> getStacks() {
@@ -131,7 +134,7 @@ public class NetworkWidget {
     }
     else if (searchText.startsWith(EnumSearchPrefix.TAG.getPrefix())) { // search tags
       List<String> joiner = new ArrayList<>();
-      for (ResourceLocation oreId : stack.getTags().map((tagKey) -> tagKey.location()).collect(Collectors.toList())) {
+      for (ResourceLocation oreId : stack.getTags().map((tagKey) -> tagKey.location()).toList()) {
         String oreName = oreId.toString();
         joiner.add(oreName);
       }
@@ -197,8 +200,8 @@ public class NetworkWidget {
         }
         int in = index;
         slots.add(new ItemSlotNetwork(gui, stacksToDisplay.get(in),
-            gui.getGuiLeft() + 8 + col * 18,
-            gui.getGuiTopFixJei() + 10 + row * 18,
+            gui.getGuiLeft() + xNetwork + col * SsnConsts.SQ,
+            gui.getGuiTopFixJei() + yNetwork + row * SsnConsts.SQ,
             stacksToDisplay.get(in).getCount(),
             gui.getGuiLeft(), gui.getGuiTopFixJei(), true));
         index++;
@@ -420,6 +423,10 @@ public class NetworkWidget {
     this.fieldHeight = fieldHeight;
   }
 
+  public int networkHeight() {
+    return this.networkHeight;
+  }
+
   public interface ISearchHandler {
 
     public abstract void setSearch(String set);
@@ -430,6 +437,6 @@ public class NetworkWidget {
   }
 
   public enum NetworkScreenSize {
-    NORMAL, LARGE;
+    NORMAL, LARGE, EXPANDED;
   }
 }

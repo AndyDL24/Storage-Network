@@ -164,7 +164,7 @@ public class ScreenCableExportFilter extends AbstractContainerScreen<ContainerCa
     }
   }
 
-  public static final int SLOT_SIZE = SsnConsts.SLOT_SIZE;
+  public static final int SLOT_SIZE = SsnConsts.SQ;
 
   @Override
   protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
@@ -192,7 +192,7 @@ public class ScreenCableExportFilter extends AbstractContainerScreen<ContainerCa
     }
     int x = leftPos + 6;
     y = topPos + 26;
-    int size = SsnConsts.SLOT_SIZE;
+    int size = SsnConsts.SQ;
     operationItemSlot = new ItemSlotNetwork(this, containerCableLink.cap.operationStack, x, y, size, leftPos, topPos, false);
     if (this.isOperationMode()) {
       operationItemSlot.drawSlot(ms, font, mouseX, mouseY);

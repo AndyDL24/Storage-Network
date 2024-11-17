@@ -68,12 +68,12 @@ public class ScreenCollectionFilter extends AbstractContainerScreen<ContainerCol
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         ItemStack stack = containerCableLink.cap.getFilter().getStackInSlot(index);
-        int x = 8 + col * SsnConsts.SLOT_SIZE;
+        int x = 8 + col * SsnConsts.SQ;
         itemSlotsGhost.add(new ItemSlotNetwork(this, stack, leftPos + x, topPos + y, stack.getCount(), leftPos, topPos, true));
         index++;
       }
       //move down to second row
-      y += SsnConsts.SLOT_SIZE;
+      y += SsnConsts.SQ;
     }
     for (ItemSlotNetwork s : itemSlotsGhost) {
       s.drawSlot(ms, font, mouseX, mouseY);
