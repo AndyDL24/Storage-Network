@@ -29,7 +29,6 @@ public class ScreenNetworkCraftingRemote extends AbstractContainerScreen<Contain
   private static final ResourceLocation textureCraft = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/request.png");
   private final NetworkWidget network;
   private final ItemStack remote;
-  private int topOffset;
 
   public ScreenNetworkCraftingRemote(ContainerNetworkCraftingRemote screenContainer, Inventory inv, Component titleIn) {
     super(screenContainer, inv, titleIn);
@@ -101,19 +100,10 @@ public class ScreenNetworkCraftingRemote extends AbstractContainerScreen<Contain
   }
 
   @Override
-  public int getGuiTopFixJei() {
-    return super.getGuiTop() + topOffset;
-  }
-
-  @Override
   public void init() {
     super.init();
     network.init(this.font);
 
-    int searchLeft = leftPos + 81, searchTop =  topPos + 96, width = 85;
-
-    network.initSearchbar(searchLeft, searchTop, width);
-    network.initButtons();
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);

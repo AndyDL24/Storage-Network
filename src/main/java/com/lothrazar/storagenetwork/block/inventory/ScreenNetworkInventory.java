@@ -32,7 +32,6 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   private final ResourceLocation texture = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/inventory.png");
   protected final NetworkWidget network;
   private TileInventory tile;
-  private int topOffset;
 
   public ScreenNetworkInventory(ContainerNetworkInventory container, Inventory inv, Component name) {
     super(container, inv, name);
@@ -49,11 +48,7 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   public void init() {
     super.init();
     network.init(this.font);
-    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 160, width = 85;
 
-
-    network.initSearchbar(searchLeft, searchTop, width);
-    network.initButtons();
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
@@ -179,10 +174,7 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
     network.stacks = stacks;
   }
 
-  @Override
-  public int getGuiTopFixJei() {
-    return super.getGuiTop() + topOffset;
-  }
+
 
   @Override
   public boolean getDownwards() {

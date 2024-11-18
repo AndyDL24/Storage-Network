@@ -58,6 +58,7 @@ public class NetworkWidget {
   protected int xNetwork = 8;
   protected int yNetwork = 10;
   private Font font;
+  private NetworkScreenSize size;
 
   @Deprecated
   public NetworkWidget(IGuiNetwork gui) {
@@ -68,6 +69,7 @@ public class NetworkWidget {
     this.gui = gui;
     stacks = Lists.newArrayList();
     slots = Lists.newArrayList();
+
     switch (size) {
       case LARGE:
 //        networkHeight = 160;
@@ -86,6 +88,7 @@ public class NetworkWidget {
         this.yNetwork = -118; // :: test
       break;
     }
+    this.size = size;
     PacketRegistry.INSTANCE.sendToServer(new RequestMessage());
     lastClick = System.currentTimeMillis();
   }
@@ -202,9 +205,9 @@ public class NetworkWidget {
         int in = index;
         slots.add(new ItemSlotNetwork(gui, stacksToDisplay.get(in),
             gui.getGuiLeft() + xNetwork + col * SsnConsts.SQ,
-            gui.getGuiTopFixJei() + yNetwork + row * SsnConsts.SQ,
+            gui.getGuiTop() + yNetwork + row * SsnConsts.SQ,
             stacksToDisplay.get(in).getCount(),
-            gui.getGuiLeft(), gui.getGuiTopFixJei(), true));
+            gui.getGuiLeft(), gui.getGuiTop(), true));
         index++;
       }
     }
@@ -212,15 +215,33 @@ public class NetworkWidget {
 
   public boolean inSearchBar(double mouseX, double mouseY) {
     return gui.isInRegion(
-        searchBar.getX() - gui.getGuiLeft(), searchBar.getY() - gui.getGuiTopFixJei(), // x, y
+        searchBar.getX() - gui.getGuiLeft(), searchBar.getY() - gui.getGuiTop(), // x, y
         searchBar.getWidth(), searchBar.getHeight(), // width, height
         mouseX, mouseY);
   }
   public void init(Font font) {
     this.font = font;
+
+
+    int searchLeft = gui.getGuiLeft() + 81, searchTop = gui.getGuiTop(), width = 85;
+    switch(this.size){
+        case NORMAL -> {
+          searchTop += 96;
+        }
+        case LARGE -> {
+          searchTop += 160;
+        }
+        case EXPANDED -> {
+          searchTop += 160 + 128;
+        }
+    }
+    initSearchbar(searchLeft, searchTop, width);
+    initButtons();
+
   }
 
-  public void initSearchbar(int searchLeft, int searchTop, int width) {
+  private void initSearchbar(int searchLeft, int searchTop, int width) {
+
     searchBar = new EditBox(font,
             searchLeft, searchTop,
             width, font.lineHeight, null);
@@ -285,14 +306,14 @@ public class NetworkWidget {
         lis.add(Component.translatable("gui.storagenetwork.fil.tooltip_tags")); //$
         lis.add(Component.translatable("gui.storagenetwork.fil.tooltip_clear")); //clear
         //        Screen screen = ((Screen) gui);
-        ms.renderTooltip(font, lis, Optional.empty(), mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTopFixJei());
+        ms.renderTooltip(font, lis, Optional.empty(), mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop());
         return; // all done, we have our tts rendered
       }
     }
     //do we have a tooltip
     if (tooltip != null) {
       //      Screen screen = ((Screen) gui);
-      ms.renderTooltip(font, Lists.newArrayList(tooltip), Optional.empty(), mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTopFixJei());
+      ms.renderTooltip(font, Lists.newArrayList(tooltip), Optional.empty(), mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop());
     }
   }
 
@@ -351,11 +372,11 @@ public class NetworkWidget {
 
   private boolean inField(int mouseX, int mouseY) {
     boolean inField = mouseX > (gui.getGuiLeft() + 7) && mouseX < (gui.getGuiLeft() + ScreenNetworkTable.WIDTH - 7)
-        && mouseY > (gui.getGuiTopFixJei() + 7) && mouseY < (gui.getGuiTopFixJei() + getFieldHeight());
+        && mouseY > (gui.getGuiTop() + 7) && mouseY < (gui.getGuiTop() + getFieldHeight());
     return inField;
   }
 
-  public void initButtons() {
+  private void initButtons() {
     int y = this.searchBar.getY() - 4;
     directionBtn = new ButtonRequest(
         gui.getGuiLeft() + 6, y, "", (p) -> {

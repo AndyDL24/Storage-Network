@@ -34,7 +34,6 @@ public class ScreenNetworkTable extends
   private final ResourceLocation texture = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/request.png");
   private final NetworkWidget network;
   private TileRequest tile;
-  private int topOffset;
 
   public ScreenNetworkTable(ContainerNetworkCraftingTable container, Inventory inv, Component name) {
     super(container, inv, name);
@@ -49,10 +48,6 @@ public class ScreenNetworkTable extends
     super.init();
     network.init(this.font);
 
-
-    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 96, width = 85;
-    network.initSearchbar(searchLeft, searchTop, width);
-    network.initButtons();
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
@@ -189,10 +184,6 @@ public class ScreenNetworkTable extends
     network.stacks = stacks;
   }
 
-  @Override
-  public int getGuiTopFixJei() {
-    return super.getGuiTop() + topOffset;
-  }
 
   @Override
   public boolean getDownwards() {

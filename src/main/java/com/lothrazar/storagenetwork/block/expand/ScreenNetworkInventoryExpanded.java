@@ -26,7 +26,7 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
   public int WIDTH = 176;
      protected final NetworkWidget network;
   private TileInventoryExpanded tile;
-  private int topOffset;
+
   private ResourceLocation top = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/inventory_expanded_top.png");
   private ResourceLocation bot = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/inventory_expanded_bottom.png");
 
@@ -34,26 +34,16 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     super(container, inv, name);
 
     tile = container.tile;
-    network = new NetworkWidget(this, getSize());
+    network = new NetworkWidget(this, NetworkWidget.NetworkScreenSize.EXPANDED);
     imageHeight = HEIGHT;
     imageWidth = WIDTH;
   }
-  public NetworkWidget.NetworkScreenSize getSize() {
-    return NetworkWidget.NetworkScreenSize.EXPANDED;
-  }
-
-
-
 
   @Override
   public void init() {
     super.init();
     network.init(this.font);
 
-    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 160+128, width = 85;
-
-    network.initSearchbar(searchLeft, searchTop, width);
-    network.initButtons();
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
@@ -112,10 +102,6 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     network.stacks = stacks;
   }
 
-  @Override
-  public int getGuiTopFixJei() {
-    return super.getGuiTop() + topOffset;
-  }
 
   @Override
   public boolean getDownwards() {

@@ -28,7 +28,6 @@ public class ScreenNetworkRemote extends AbstractContainerScreen<ContainerNetwor
       "textures/gui/inventory.png");
   private final NetworkWidget network;
   private final ItemStack remote;
-  private int topOffset;
 
   public ScreenNetworkRemote(ContainerNetworkRemote screenContainer, Inventory inv, Component titleIn) {
     super(screenContainer, inv, titleIn);
@@ -99,23 +98,13 @@ public class ScreenNetworkRemote extends AbstractContainerScreen<ContainerNetwor
     ItemStorageCraftingRemote.setJeiSearchSynced(remote, val);
   }
 
-  @Override
-  public int getGuiTopFixJei() {
-    return super.getGuiTop() + topOffset;
-  }
 
   @Override
   public void init() {
     super.init();
 
     network.init(this.font);
-    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 160, width = 85;
-//    network.searchBar = new EditBox(font,
-//        searchLeft, searchTop,
-//        width, font.lineHeight, null);
-//    network.searchBar.setMaxLength(30);
-    network.initSearchbar(searchLeft, searchTop, width);
-    network.initButtons();
+
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
