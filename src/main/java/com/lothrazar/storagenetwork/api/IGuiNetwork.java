@@ -23,9 +23,9 @@ public interface IGuiNetwork extends IGuiPrivate {
 
   EnumSortType getSort();
 
- default BlockPos getPos() {
-   return null;
- }
+  default BlockPos getPos() {
+    return null;
+  }
 
   default void syncDataToServer() {
     PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(getPos(), getDownwards(), getSort(), isJeiSearchSynced(), getAutoFocus()));

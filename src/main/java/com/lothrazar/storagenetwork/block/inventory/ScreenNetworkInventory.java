@@ -1,29 +1,16 @@
 package com.lothrazar.storagenetwork.block.inventory;
 
-import java.util.List;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
-import com.lothrazar.storagenetwork.api.IGuiNetwork;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
+import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import com.lothrazar.storagenetwork.gui.NetworkWidget.NetworkScreenSize;
-import com.lothrazar.storagenetwork.gui.TextboxInteger;
-import com.lothrazar.storagenetwork.jei.JeiHooks;
-import com.lothrazar.storagenetwork.network.SettingsSyncMessage;
-import com.lothrazar.storagenetwork.registry.PacketRegistry;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
-
 
 public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetworkInventory> {//AbstractContainerScreen<ContainerNetworkInventory> implements IGuiNetwork {
 
@@ -45,7 +32,6 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   public void init() {
     super.init();
     network.init(this.font);
-
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
@@ -65,9 +51,7 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-
-// all the IGUINETWORK implementations
-
+  // all the IGUINETWORK implementations
 
   @Override
   public boolean getDownwards() {
@@ -118,5 +102,4 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   public NetworkWidget getNetwork() {
     return network;
   }
-
 }

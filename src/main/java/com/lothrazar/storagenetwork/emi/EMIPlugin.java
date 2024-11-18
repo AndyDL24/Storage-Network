@@ -2,6 +2,7 @@ package com.lothrazar.storagenetwork.emi;
 
 import com.lothrazar.storagenetwork.block.request.ContainerNetworkCraftingTable;
 import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
+import com.lothrazar.storagenetwork.gui.ISearchHandler;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkCraftingRemote;
 import com.lothrazar.storagenetwork.item.remote.ScreenNetworkCraftingRemote;
@@ -34,7 +35,7 @@ public class EMIPlugin implements EmiPlugin {
   }
 
   static {
-    NetworkWidget.searchHandlers.add(new NetworkWidget.ISearchHandler() {
+    NetworkWidget.searchHandlers.add(new ISearchHandler() {
 
       @Override
       public void setSearch(String set) {

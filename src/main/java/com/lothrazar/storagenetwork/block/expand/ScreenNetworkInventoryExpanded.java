@@ -2,39 +2,29 @@ package com.lothrazar.storagenetwork.block.expand;
 
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
-import com.lothrazar.storagenetwork.api.IGuiNetwork;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
-import com.lothrazar.storagenetwork.block.inventory.ContainerNetworkInventory;
-import com.lothrazar.storagenetwork.block.inventory.ScreenNetworkInventory;
-import com.lothrazar.storagenetwork.block.inventory.TileInventory;
+import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
-
-import java.util.List;
 
 public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<ContainerNetworkInventoryExpanded> {//AbstractContainerScreen<ContainerNetworkInventoryExpanded> implements IGuiNetwork {
 
   protected int HEIGHT = 256;
   public int WIDTH = 176;
-     protected final NetworkWidget network;
+  protected final NetworkWidget network;
   private TileInventoryExpanded tile;
-
   private ResourceLocation top = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/inventory_expanded_top.png");
   private ResourceLocation bot = new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/inventory_expanded_bottom.png");
 
   public ScreenNetworkInventoryExpanded(ContainerNetworkInventoryExpanded container, Inventory inv, Component name) {
     super(container, inv, name);
-
     tile = container.tile;
-    network = new NetworkWidget(this, NetworkWidget.NetworkScreenSize.EXPANDED);
+    network = new NetworkWidget(this, NetworkScreenSize.EXPANDED);
     imageHeight = HEIGHT;
     imageWidth = WIDTH;
   }
@@ -43,7 +33,6 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
   public void init() {
     super.init();
     network.init(this.font);
-
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
@@ -64,8 +53,7 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-
-// all the IGUINETWORK implementations
+  // all the IGUINETWORK implementations
 
   @Override
   public boolean getDownwards() {
@@ -116,5 +104,4 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
   public NetworkWidget getNetwork() {
     return network;
   }
-
 }

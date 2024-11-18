@@ -30,9 +30,10 @@ public abstract class TileConnectable extends BlockEntity {
     connectable = new CapabilityConnectable();
   }
 
-  public  EnumSortType getSort() {
+  public EnumSortType getSort() {
     return EnumSortType.NAME; //unused by some blocks
   }
+
   public boolean isDownwards() {
     return false; //unused by some blocks
   }

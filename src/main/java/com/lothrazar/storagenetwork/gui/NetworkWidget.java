@@ -67,12 +67,11 @@ public class NetworkWidget {
     this.gui = gui;
     stacks = Lists.newArrayList();
     slots = Lists.newArrayList();
-
     switch (size) {
       case NORMAL:
         setLines(4);
         scrollHeight = 135;
-        break;
+      break;
       case LARGE:
         setLines(4 * 2);
         scrollHeight = (SsnConsts.SQ + 1) * this.getLines(); // 152;
@@ -96,7 +95,9 @@ public class NetworkWidget {
     this.stacks = stacks;
   }
 
-  public NetworkScreenSize getSize(){return size;}
+  public NetworkScreenSize getSize() {
+    return size;
+  }
 
   public void applySearchTextToSlots() {
     String searchText = searchBar.getValue();
@@ -220,31 +221,29 @@ public class NetworkWidget {
         searchBar.getWidth(), searchBar.getHeight(), // width, height
         mouseX, mouseY);
   }
+
   public void init(Font font) {
     this.font = font;
-
-
     int searchLeft = gui.getGuiLeft() + 81, searchTop = gui.getGuiTop(), width = 85;
-    switch(this.size){
-        case NORMAL -> {
-          searchTop += 96;
-        }
-        case LARGE -> {
-          searchTop += 160;
-        }
-        case EXPANDED -> {
-          searchTop += 160 + 128;
-        }
+    switch (this.size) {
+      case NORMAL -> {
+        searchTop += 96;
+      }
+      case LARGE -> {
+        searchTop += 160;
+      }
+      case EXPANDED -> {
+        searchTop += 160 + 128;
+      }
     }
     initSearchbar(searchLeft, searchTop, width);
     initButtons();
   }
 
   private void initSearchbar(int searchLeft, int searchTop, int width) {
-
     searchBar = new EditBox(font,
-            searchLeft, searchTop,
-            width, font.lineHeight, null);
+        searchLeft, searchTop,
+        width, font.lineHeight, null);
     searchBar.setMaxLength(30);
     searchBar.setBordered(false);
     searchBar.setVisible(true);
@@ -305,14 +304,12 @@ public class NetworkWidget {
         lis.add(Component.translatable("gui.storagenetwork.fil.tooltip_tooltip")); //#
         lis.add(Component.translatable("gui.storagenetwork.fil.tooltip_tags")); //$
         lis.add(Component.translatable("gui.storagenetwork.fil.tooltip_clear")); //clear
-        //        Screen screen = ((Screen) gui);
         ms.renderTooltip(font, lis, Optional.empty(), mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop());
         return; // all done, we have our tts rendered
       }
     }
     //do we have a tooltip
     if (tooltip != null) {
-      //      Screen screen = ((Screen) gui);
       ms.renderTooltip(font, Lists.newArrayList(tooltip), Optional.empty(), mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop());
     }
   }
@@ -375,15 +372,14 @@ public class NetworkWidget {
     switch (size) {
       case NORMAL:
         fieldHeight = 90;
-        break;
+      break;
       case LARGE:
         fieldHeight = 172;
-        break;
+      break;
       case EXPANDED:
-        fieldHeight = 172*2;
-        break;
+        fieldHeight = 172 * 2;
+      break;
     }
-
     boolean inField = mouseX > (gui.getGuiLeft() + 7) && mouseX < (gui.getGuiLeft() + ScreenNetworkTable.WIDTH - 7)
         && mouseY > (gui.getGuiTop() + 7) && mouseY < (gui.getGuiTop() + fieldHeight);
     return inField;
@@ -455,18 +451,5 @@ public class NetworkWidget {
     if (jeiBtn != null && ModList.get().isLoaded("jei")) {
       jeiBtn.setTextureId(gui.isJeiSearchSynced() ? TextureEnum.JEI_GREEN : TextureEnum.JEI_RED);
     }
-  }
-
-  public interface ISearchHandler {
-
-    public abstract void setSearch(String set);
-
-    public abstract String getSearch();
-
-    public abstract String getName();
-  }
-
-  public enum NetworkScreenSize {
-    NORMAL, LARGE, EXPANDED;
   }
 }

@@ -15,5 +15,4 @@ public class BlockInventoryExpanded extends EntityBlockConnectable {
   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
     return new TileInventoryExpanded(pos, state);
   }
-
 }

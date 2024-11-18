@@ -24,7 +24,9 @@ import com.lothrazar.storagenetwork.block.exchange.TileExchange;
 import com.lothrazar.storagenetwork.block.expand.BlockInventoryExpanded;
 import com.lothrazar.storagenetwork.block.expand.ContainerNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.block.expand.TileInventoryExpanded;
-import com.lothrazar.storagenetwork.block.inventory.*;
+import com.lothrazar.storagenetwork.block.inventory.BlockInventory;
+import com.lothrazar.storagenetwork.block.inventory.ContainerNetworkInventory;
+import com.lothrazar.storagenetwork.block.inventory.TileInventory;
 import com.lothrazar.storagenetwork.block.main.BlockMain;
 import com.lothrazar.storagenetwork.block.main.TileMain;
 import com.lothrazar.storagenetwork.block.request.BlockRequest;
@@ -59,7 +61,7 @@ public class SsnRegistry {
   public static class Blocks {
 
     public static final RegistryObject<Block> REQUEST = BLOCKS.register("request", () -> new BlockRequest());
-  //  public static final RegistryObject<Block> REQUEST_EXPANDED = BLOCKS.register("request_expanded", () -> new BlockRequest());
+    //  public static final RegistryObject<Block> REQUEST_EXPANDED = BLOCKS.register("request_expanded", () -> new BlockRequest());
     public static final RegistryObject<Block> KABEL = BLOCKS.register("kabel", () -> new BlockCable());
     public static final RegistryObject<Block> MASTER = BLOCKS.register("master", () -> new BlockMain());
     public static final RegistryObject<Block> STORAGE_KABEL = BLOCKS.register("storage_kabel", () -> new BlockCableLink());
@@ -77,7 +79,7 @@ public class SsnRegistry {
   public static class Items {
 
     public static final RegistryObject<Item> REQUEST = ITEMS.register("request", () -> new BlockItem(Blocks.REQUEST.get(), new Item.Properties()));
-  //  public static final RegistryObject<Item> REQUEST_EXPANDED = ITEMS.register("request_expanded", () -> new BlockItem(Blocks.REQUEST_EXPANDED.get(), new Item.Properties()));
+    //  public static final RegistryObject<Item> REQUEST_EXPANDED = ITEMS.register("request_expanded", () -> new BlockItem(Blocks.REQUEST_EXPANDED.get(), new Item.Properties()));
     public static final RegistryObject<Item> KABEL = ITEMS.register("kabel", () -> new BlockItem(Blocks.KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> INVENTORY = ITEMS.register("inventory", () -> new BlockItem(Blocks.INVENTORY.get(), new Item.Properties()));
     public static final RegistryObject<Item> INVENTORY_EXPANDED = ITEMS.register("inventory_expanded", () -> new BlockItem(Blocks.INVENTORY_EXPANDED.get(), new Item.Properties()));

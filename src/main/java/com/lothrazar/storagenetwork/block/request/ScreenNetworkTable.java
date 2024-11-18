@@ -1,33 +1,20 @@
 package com.lothrazar.storagenetwork.block.request;
 
-import java.util.List;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
-import com.lothrazar.storagenetwork.api.IGuiNetwork;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
+import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import com.lothrazar.storagenetwork.gui.NetworkWidget.NetworkScreenSize;
-import com.lothrazar.storagenetwork.gui.TextboxInteger;
-import com.lothrazar.storagenetwork.jei.JeiHooks;
-import com.lothrazar.storagenetwork.network.ClearRecipeMessage;
-import com.lothrazar.storagenetwork.network.RequestMessage;
-import com.lothrazar.storagenetwork.network.SettingsSyncMessage;
-import com.lothrazar.storagenetwork.registry.PacketRegistry;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
-
 public class ScreenNetworkTable extends
-        AbstractNetworkScreen<ContainerNetworkCraftingTable> {
-        //AbstractContainerScreen<ContainerNetworkCraftingTable> implements IGuiNetwork {
+    AbstractNetworkScreen<ContainerNetworkCraftingTable> {
+  //AbstractContainerScreen<ContainerNetworkCraftingTable> implements IGuiNetwork {
 
   private static final int HEIGHT = 256;
   public static final int WIDTH = 176;
@@ -47,7 +34,6 @@ public class ScreenNetworkTable extends
   public void init() {
     super.init();
     network.init(this.font);
-
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
@@ -58,6 +44,7 @@ public class ScreenNetworkTable extends
       addRenderableWidget(network.jeiBtn);
     }
   }
+
   @Override
   public void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
     int xCenter = (width - imageWidth) / 2;
@@ -67,11 +54,7 @@ public class ScreenNetworkTable extends
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-
-
-
-// all the IGUINETWORK implementations
-
+  // all the IGUINETWORK implementations
 
   @Override
   public boolean getDownwards() {
