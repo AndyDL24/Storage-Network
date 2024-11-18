@@ -1,16 +1,24 @@
 package com.lothrazar.storagenetwork.block;
 
+import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
+import com.lothrazar.storagenetwork.gui.NetworkWidget;
+import com.lothrazar.storagenetwork.gui.TextboxInteger;
+import com.lothrazar.storagenetwork.jei.JeiHooks;
+import com.lothrazar.storagenetwork.network.ClearRecipeMessage;
+import com.lothrazar.storagenetwork.network.RequestMessage;
+import com.lothrazar.storagenetwork.registry.PacketRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-
 import java.util.List;
 
 public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IGuiNetwork  {
+
     public AbstractNetworkScreen(T container, Inventory inv, Component name) {
         super(container, inv, name);
     }
@@ -33,6 +41,36 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
         return false;
     }
 
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int b) {
+        InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
+        if (keyCode == TextboxInteger.KEY_ESC) {
+            minecraft.player.closeContainer();
+            return true; // Forge MC-146650: Needs to return true when the key is handled.
+        }
+        if (getNetwork().searchBar.isFocused()) {
+            if (keyCode == TextboxInteger.KEY_BACKSPACE) { // BACKSPACE
+                getNetwork().syncTextToJei();
+            }
+            getNetwork().searchBar.keyPressed(keyCode, scanCode, b);
+            return true;
+        }
+        else if (!getNetwork().stackUnderMouse.isEmpty()) {
+            try {
+                JeiHooks.testJeiKeybind(mouseKey, getNetwork().stackUnderMouse);
+            }
+            catch (Throwable e) {
+                StorageNetworkMod.LOGGER.error("Error thrown from JEI API ", e);
+            }
+        }
+        //Regardless of above branch, also check this
+        if (minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
+            minecraft.player.closeContainer();
+            return true; // Forge MC-146650: Needs to return true when the key is handled.
+        }
+        return super.keyPressed(keyCode, scanCode, b);
+    }
+
     // used by ItemSlotNetwork and NetworkWidget
     @Override
     public boolean isInRegion(int x, int y, int width, int height, double mouseX, double mouseY) {
@@ -40,8 +78,9 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
     }
 
     public boolean isScrollable(double x, double y) {
-        return isHovering(0, 0,
-                this.width - 8, getNetwork().scrollHeight,
+
+        return isHovering(getNetwork().xNetwork, getNetwork().yNetwork,
+                this.width, getNetwork().scrollHeight,
                 x, y);
     }
     @Override
@@ -56,6 +95,31 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
     }
 
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        getNetwork().mouseClicked(mouseX, mouseY, mouseButton);
+        if(getNetwork().getSize() == NetworkWidget.NetworkScreenSize.NORMAL) {
+            //TODO: this is part of crafting grid, to clear it out. should be its own button class
+            int rectX = 63;
+            int rectY = 110;
+            if (isHovering(rectX, rectY, 7, 7, mouseX, mouseY)) {
+                PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
+                PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
+                return true;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(ms);
+        super.render(ms, mouseX, mouseY, partialTicks);
+        this.renderTooltip(ms, mouseX, mouseY);
+        getNetwork().searchBar.render(ms, mouseX, mouseY, partialTicks);
+        getNetwork().render();
+    }
+    @Override
     public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
         ms.renderTooltip(font, stack, mousex, mousey);
     }
@@ -64,6 +128,4 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
     public void renderLabels(GuiGraphics ms, int mouseX, int mouseY) {
         getNetwork().drawGuiContainerForegroundLayer(ms, mouseX, mouseY, font);
     }
-
-
 }

@@ -36,14 +36,11 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   public ScreenNetworkInventory(ContainerNetworkInventory container, Inventory inv, Component name) {
     super(container, inv, name);
     tile = container.tile;
-    network = new NetworkWidget(this, getSize());
+    network = new NetworkWidget(this, NetworkScreenSize.LARGE);
     imageHeight = HEIGHT;
     imageWidth = WIDTH;
   }
 
-  public NetworkScreenSize getSize() {
-    return NetworkScreenSize.LARGE;
-  }
   @Override
   public void init() {
     super.init();
@@ -61,14 +58,6 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   }
 
   @Override
-  public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-    renderBackground(ms);
-    super.render(ms, mouseX, mouseY, partialTicks);
-    this.renderTooltip(ms, mouseX, mouseY);
-    network.searchBar.render(ms, mouseX, mouseY, partialTicks);
-    network.render();
-  }
-  @Override
   public void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
     int xCenter = (width - imageWidth) / 2;
     int yCenter = (height - imageHeight) / 2;
@@ -77,60 +66,7 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
 
-
-  @Override
-  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-    super.mouseClicked(mouseX, mouseY, mouseButton);
-    network.mouseClicked(mouseX, mouseY, mouseButton);
-    return true;
-  }
-
-  @OnlyIn(Dist.CLIENT)
-  @Override
-  public boolean keyPressed(int keyCode, int scanCode, int b) {
-    InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
-    if (keyCode == TextboxInteger.KEY_ESC) {
-      minecraft.player.closeContainer();
-      return true; // Forge MC-146650: Needs to return true when the key is handled.
-    }
-    if (network.searchBar.isFocused()) {
-      network.searchBar.keyPressed(keyCode, scanCode, b);
-      if (keyCode == TextboxInteger.KEY_BACKSPACE) { // BACKSPACE
-        network.syncTextToJei();
-      }
-      return true;
-    }
-    else if (!network.stackUnderMouse.isEmpty()) {
-      try {
-        JeiHooks.testJeiKeybind(mouseKey, network.stackUnderMouse);
-      }
-      catch (Throwable e) {
-        StorageNetworkMod.LOGGER.error("JEI compat issue ", e);
-        //its ok JEI not installed for maybe an addon mod is ok
-      }
-    }
-    //regardles of above branch, also check this
-    if (minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
-      minecraft.player.closeContainer();
-      return true; // Forge MC-146650: Needs to return true when the key is handled.
-    }
-    return super.keyPressed(keyCode, scanCode, b);
-  }
-
-  @Override
-  public boolean charTyped(char typedChar, int keyCode) {
-    if (network.charTyped(typedChar, keyCode)) {
-      return true;
-    }
-    return false;
-  }
-
-
-
-
 // all the IGUINETWORK implementations
-
-
 
 
   @Override

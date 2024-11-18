@@ -35,6 +35,7 @@ public class ScreenNetworkRemote  extends AbstractNetworkScreen<ContainerNetwork
     //since the rightclick action forces only MAIN_HAND openings, is ok
     this.remote = screenContainer.getRemote();
     network = new NetworkWidget(this, NetworkScreenSize.LARGE);
+
     this.imageWidth = WIDTH;
     this.imageHeight = HEIGHT;
   }
@@ -58,60 +59,12 @@ public class ScreenNetworkRemote  extends AbstractNetworkScreen<ContainerNetwork
   }
 
   @Override
-  public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(ms);
-    super.render(ms, mouseX, mouseY, partialTicks);
-    this.renderTooltip(ms, mouseX, mouseY);
-    network.searchBar.render(ms, mouseX, mouseY, partialTicks);
-    network.render();
-  }
-
-  @Override
   protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
     int xCenter = (this.width - this.imageWidth) / 2;
     int yCenter = (this.height - this.imageHeight) / 2;
     ms.blit(texture, xCenter, yCenter, 0, 0, this.imageWidth, this.imageHeight);
-    getNetwork().applySearchTextToSlots();
-    getNetwork().renderItemSlots(ms, mouseX, mouseY, font);
-  }
-
-
-
-  @Override
-  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-    super.mouseClicked(mouseX, mouseY, mouseButton);
-    getNetwork().mouseClicked(mouseX, mouseY, mouseButton);
-    return true;
-  }
-
-  @Override
-  public boolean keyPressed(int keyCode, int scanCode, int b) {
-    InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
-    if (keyCode == TextboxInteger.KEY_ESC) {
-      minecraft.player.closeContainer();
-      return true; // Forge MC-146650: Needs to return true when the key is handled.
-    }
-    if (network.searchBar.isFocused()) {
-      if (keyCode == TextboxInteger.KEY_BACKSPACE) {
-        network.syncTextToJei();
-      }
-      network.searchBar.keyPressed(keyCode, scanCode, b);
-      return true;
-    }
-    else if (!network.stackUnderMouse.isEmpty()) {
-      try {
-        JeiHooks.testJeiKeybind(mouseKey, network.stackUnderMouse);
-      }
-      catch (Throwable e) {
-        StorageNetworkMod.LOGGER.error("JEI compat issue ", e);
-      }
-    }
-    //regardles of above branch, also check this
-    if (minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
-      minecraft.player.closeContainer();
-      return true; // Forge MC-146650: Needs to return true when the key is handled.
-    }
-    return super.keyPressed(keyCode, scanCode, b);
+    network.applySearchTextToSlots();
+    network.renderItemSlots(ms, mouseX, mouseY, font);
   }
 
   @Override

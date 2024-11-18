@@ -55,19 +55,6 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     }
   }
 
-
-
-
-
-
-  @Override
-  public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-    renderBackground(ms);
-    super.render(ms, mouseX, mouseY, partialTicks);
-    this.renderTooltip(ms, mouseX, mouseY);
-    network.searchBar.render(ms, mouseX, mouseY, partialTicks);
-    network.render();
-  }
   @Override
   public void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
     int xCenter = (width - imageWidth) / 2;
@@ -78,11 +65,7 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
 
-  //TODO keyboard events in shared class
-
-
 // all the IGUINETWORK implementations
-
 
   @Override
   public boolean getDownwards() {
@@ -128,7 +111,6 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
   public void setAutoFocus(boolean b) {
     tile.setAutoFocus(b);
   }
-
 
   @Override
   public NetworkWidget getNetwork() {

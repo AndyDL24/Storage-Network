@@ -58,21 +58,8 @@ public class ScreenNetworkTable extends
       addRenderableWidget(network.jeiBtn);
     }
   }
-
-  @Override
-  public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-    renderBackground(ms);
-    super.render(ms, mouseX, mouseY, partialTicks);
-    this.renderTooltip(ms, mouseX, mouseY);
-    network.searchBar.render(ms, mouseX, mouseY, partialTicks);
-    network.render();
-  }
-
   @Override
   public void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-    //    minecraft.getTextureManager().bind(texture);
-    //    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-    //    RenderSystem.setShaderTexture(0, texture);
     int xCenter = (width - imageWidth) / 2;
     int yCenter = (height - imageHeight) / 2;
     ms.blit(texture, xCenter, yCenter, 0, 0, imageWidth, imageHeight);
@@ -80,55 +67,6 @@ public class ScreenNetworkTable extends
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-
-  @Override
-  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-    super.mouseClicked(mouseX, mouseY, mouseButton);
-    network.mouseClicked(mouseX, mouseY, mouseButton);
-    //recipe clear thingy
-    //TODO: network needs isCrafting and isPointInRegion access to refactor
-    // OR make real button lol
-    int rectX = 63;
-    int rectY = 110;
-    if (isHovering(rectX, rectY, 7, 7, mouseX, mouseY)) {
-      PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
-      PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
-      return true;
-    }
-    return true;
-  }
-
-  @Override
-  public boolean keyPressed(int keyCode, int scanCode, int b) {
-    InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
-    if (keyCode == TextboxInteger.KEY_ESC) { //ESCAPE
-      minecraft.player.closeContainer();
-      return true; // Forge MC-146650: Needs to return true when the key is handled.
-    }
-    if (network.searchBar.isFocused()) {
-      network.searchBar.keyPressed(keyCode, scanCode, b);
-      if (keyCode == TextboxInteger.KEY_BACKSPACE) {
-        network.syncTextToJei();
-      }
-      return true;
-    }
-    else if (!network.stackUnderMouse.isEmpty()) {
-      try {
-        JeiHooks.testJeiKeybind(mouseKey, network.stackUnderMouse);
-      }
-      catch (Throwable e) {
-        StorageNetworkMod.LOGGER.error("JEI compat issue ", e);
-        //its ok JEI not installed for maybe an addon mod is ok
-      }
-    }
-    //regardles of above branch, also check this
-    if (minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
-      minecraft.player.closeContainer();
-      return true; // Forge MC-146650: Needs to return true when the key is handled.
-    }
-    return super.keyPressed(keyCode, scanCode, b);
-  }
-
 
 
 

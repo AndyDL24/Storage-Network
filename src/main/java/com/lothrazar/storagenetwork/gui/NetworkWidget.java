@@ -11,8 +11,6 @@ import com.google.common.collect.Lists;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSearchPrefix;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
-import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
-import com.lothrazar.storagenetwork.block.inventory.ScreenNetworkInventory;
 import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
 import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
 import com.lothrazar.storagenetwork.network.InsertMessage;
@@ -54,9 +52,8 @@ public class NetworkWidget {
   private int maxPage = 1;
   private int lines = 4;
   private final int columns = 9;
-  //
-  protected int xNetwork = 8;
-  protected int yNetwork = 10;
+  public int xNetwork = 8;
+  public int yNetwork = 10;
   private Font font;
   private NetworkScreenSize size;
   public int scrollHeight = 152;
@@ -73,27 +70,23 @@ public class NetworkWidget {
 
     switch (size) {
       case NORMAL:
-        scrollHeight = 135;
         setLines(4);
+        scrollHeight = 135;
         break;
       case LARGE:
-        //scrollable area 152 ?
-        scrollHeight = 152;
-        setLines(8);
+        setLines(4 * 2);
+        scrollHeight = (SsnConsts.SQ + 1) * this.getLines(); // 152;
       break;
       case EXPANDED:
-        scrollHeight = 152 * 3; // ??
-        setLines(3 * 8 - 2); // the number of rows that can fit
-//        setFieldHeight(180+180);
-        this.yNetwork = -118; // :: test
+        this.yNetwork = -118; //offset for large monitors and double texture
+        setLines(4 * 5 + 2); // 22 the number of rows that can fit
+        scrollHeight = (SsnConsts.SQ + 1) * this.getLines(); //   19*22=418
       break;
     }
     this.size = size;
     PacketRegistry.INSTANCE.sendToServer(new RequestMessage());
     lastClick = System.currentTimeMillis();
   }
-
-
 
   public List<ItemStack> getStacks() {
     return stacks;
@@ -102,6 +95,8 @@ public class NetworkWidget {
   public void setStacks(List<ItemStack> stacks) {
     this.stacks = stacks;
   }
+
+  public NetworkScreenSize getSize(){return size;}
 
   public void applySearchTextToSlots() {
     String searchText = searchBar.getValue();
@@ -243,7 +238,6 @@ public class NetworkWidget {
     }
     initSearchbar(searchLeft, searchTop, width);
     initButtons();
-
   }
 
   private void initSearchbar(int searchLeft, int searchTop, int width) {
@@ -462,8 +456,6 @@ public class NetworkWidget {
       jeiBtn.setTextureId(gui.isJeiSearchSynced() ? TextureEnum.JEI_GREEN : TextureEnum.JEI_RED);
     }
   }
-
-
 
   public interface ISearchHandler {
 
