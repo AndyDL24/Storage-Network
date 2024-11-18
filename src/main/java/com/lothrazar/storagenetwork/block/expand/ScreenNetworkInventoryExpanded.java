@@ -48,13 +48,11 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
   @Override
   public void init() {
     super.init();
-    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + network.networkHeight(), width = 85;
+    network.init(this.font);
 
-    network.searchBar = new EditBox(font,
-            searchLeft, searchTop,
-            width, font.lineHeight, null);
-    network.searchBar.setMaxLength(30);
-    network.initSearchbar();
+    int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 160+128, width = 85;
+
+    network.initSearchbar(searchLeft, searchTop, width);
     network.initButtons();
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);

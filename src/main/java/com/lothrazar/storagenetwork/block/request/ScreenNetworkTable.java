@@ -47,12 +47,11 @@ public class ScreenNetworkTable extends
   @Override
   public void init() {
     super.init();
+    network.init(this.font);
+
+
     int searchLeft = leftPos + 81, searchTop = getGuiTopFixJei() + 96, width = 85;
-    network.searchBar = new EditBox(font,
-        searchLeft, searchTop,
-        width, font.lineHeight, null);
-    network.searchBar.setMaxLength(30);
-    network.initSearchbar();
+    network.initSearchbar(searchLeft, searchTop, width);
     network.initButtons();
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);

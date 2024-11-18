@@ -54,9 +54,10 @@ public class NetworkWidget {
   private int lines = 4;
   private final int columns = 9;
   //
-  public int networkHeight = 160;
+//  public int networkHeight = 160;
   protected int xNetwork = 8;
   protected int yNetwork = 10;
+  private Font font;
 
   @Deprecated
   public NetworkWidget(IGuiNetwork gui) {
@@ -69,7 +70,7 @@ public class NetworkWidget {
     slots = Lists.newArrayList();
     switch (size) {
       case LARGE:
-        networkHeight = 160;
+//        networkHeight = 160;
         setLines(8);
         setFieldHeight(172);
       break;
@@ -79,7 +80,7 @@ public class NetworkWidget {
         setFieldHeight(90);
       break;
       case EXPANDED:
-        networkHeight = 160 + 128; // was 160;
+//        networkHeight = 160 + 128; // was 160;
         setLines(3 * 8 - 2); // the number of rows that can fit
 //        setFieldHeight(180+180);
         this.yNetwork = -118; // :: test
@@ -215,8 +216,15 @@ public class NetworkWidget {
         searchBar.getWidth(), searchBar.getHeight(), // width, height
         mouseX, mouseY);
   }
+  public void init(Font font) {
+    this.font = font;
+  }
 
-  public void initSearchbar() {
+  public void initSearchbar(int searchLeft, int searchTop, int width) {
+    searchBar = new EditBox(font,
+            searchLeft, searchTop,
+            width, font.lineHeight, null);
+    searchBar.setMaxLength(30);
     searchBar.setBordered(false);
     searchBar.setVisible(true);
     searchBar.setTextColor(16777215);
@@ -423,9 +431,6 @@ public class NetworkWidget {
     this.fieldHeight = fieldHeight;
   }
 
-  public int networkHeight() {
-    return this.networkHeight;
-  }
 
   public interface ISearchHandler {
 
