@@ -5,6 +5,7 @@ import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -12,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fml.ModList;
 
-public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetworkInventory> {//AbstractContainerScreen<ContainerNetworkInventory> implements IGuiNetwork {
+public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetworkInventory> {
 
   protected int HEIGHT = 256;
   public int WIDTH = 176;
@@ -50,6 +51,13 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
     ms.blit(texture, xCenter, yCenter, 0, 0, imageWidth, imageHeight);
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
+  }
+
+
+  @Override
+  public void resize(Minecraft mc, int w, int h) {
+    super.resize(mc,w,h);
+    network.resize(mc,w,h);
   }
   // all the IGUINETWORK implementations
 

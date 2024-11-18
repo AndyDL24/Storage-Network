@@ -156,7 +156,7 @@ public class NetworkWidget {
     return System.currentTimeMillis() > lastClick + 100L;
   }
 
-  int getLines() {
+  public int getLines() {
     return lines;
   }
 
@@ -451,5 +451,12 @@ public class NetworkWidget {
     if (jeiBtn != null && ModList.get().isLoaded("jei")) {
       jeiBtn.setTextureId(gui.isJeiSearchSynced() ? TextureEnum.JEI_GREEN : TextureEnum.JEI_RED);
     }
+  }
+
+  public void resize(Minecraft mc, int width, int height) {
+
+    //todo: how many rows? dynamically change size on screen resize from client
+   //System.out.println("resized  width="+width);
+   // System.out.println("resized height="+height);
   }
 }
