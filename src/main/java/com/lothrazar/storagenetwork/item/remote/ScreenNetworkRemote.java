@@ -4,6 +4,7 @@ import java.util.List;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
+import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
 import com.lothrazar.storagenetwork.gui.NetworkWidget.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.TextboxInteger;
@@ -20,7 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
-public class ScreenNetworkRemote extends AbstractContainerScreen<ContainerNetworkRemote> implements IGuiNetwork {
+public class ScreenNetworkRemote  extends AbstractNetworkScreen<ContainerNetworkRemote> {// extends AbstractContainerScreen<ContainerNetworkRemote> implements IGuiNetwork {
 
   private static final int HEIGHT = 256;
   private static final int WIDTH = 176;
@@ -36,66 +37,6 @@ public class ScreenNetworkRemote extends AbstractContainerScreen<ContainerNetwor
     network = new NetworkWidget(this, NetworkScreenSize.LARGE);
     this.imageWidth = WIDTH;
     this.imageHeight = HEIGHT;
-  }
-
-  @Override
-  public void drawGradient(GuiGraphics ms, int x, int y, int x2, int y2, int u, int v) {
-    ms.fillGradient(x, y, x2, y2, u, v);
-  }
-
-  @Override
-  public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
-    ms.renderTooltip(font, stack, mousex, mousey);
-  }
-
-  @Override
-  public NetworkWidget getNetworkWidget() {
-    return network;
-  }
-
-  @Override
-  public void setStacks(List<ItemStack> stacks) {
-    network.stacks = stacks;
-  }
-
-  @Override
-  public boolean getDownwards() {
-    return ItemStorageCraftingRemote.getDownwards(remote);
-  }
-
-  @Override
-  public void setDownwards(boolean val) {
-    ItemStorageCraftingRemote.setDownwards(remote, val);
-  }
-
-  @Override
-  public EnumSortType getSort() {
-    return ItemStorageCraftingRemote.getSort(remote);
-  }
-
-  @Override
-  public void setSort(EnumSortType val) {
-    ItemStorageCraftingRemote.setSort(remote, val);
-  }
-
-  @Override
-  public boolean getAutoFocus() {
-    return ItemStorageCraftingRemote.getAutoFocus(remote);
-  }
-
-  @Override
-  public void setAutoFocus(boolean b) {
-    ItemStorageCraftingRemote.setAutoFocus(remote, b);
-  }
-
-  @Override
-  public boolean isJeiSearchSynced() {
-    return ItemStorageCraftingRemote.isJeiSearchSynced(remote);
-  }
-
-  @Override
-  public void setJeiSearchSynced(boolean val) {
-    ItemStorageCraftingRemote.setJeiSearchSynced(remote, val);
   }
 
 
@@ -130,37 +71,16 @@ public class ScreenNetworkRemote extends AbstractContainerScreen<ContainerNetwor
     int xCenter = (this.width - this.imageWidth) / 2;
     int yCenter = (this.height - this.imageHeight) / 2;
     ms.blit(texture, xCenter, yCenter, 0, 0, this.imageWidth, this.imageHeight);
-    network.applySearchTextToSlots();
-    network.renderItemSlots(ms, mouseX, mouseY, font);
+    getNetwork().applySearchTextToSlots();
+    getNetwork().renderItemSlots(ms, mouseX, mouseY, font);
   }
 
-  @Override
-  public void renderLabels(GuiGraphics ms, int mouseX, int mouseY) {
-    network.drawGuiContainerForegroundLayer(ms, mouseX, mouseY, font);
-  }
 
-  boolean isScrollable(double x, double y) {
-    int scrollHeight = 152;
-    return isHovering(0, 0,
-        this.width - 8, scrollHeight,
-        x, y);
-  }
-
-  @Override
-  public boolean mouseScrolled(double x, double y, double mouseButton) {
-    super.mouseScrolled(x, y, mouseButton);
-    //<0 going down
-    // >0 going up
-    if (isScrollable(x, y) && mouseButton != 0) {
-      network.mouseScrolled(mouseButton);
-    }
-    return true;
-  }
 
   @Override
   public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     super.mouseClicked(mouseX, mouseY, mouseButton);
-    network.mouseClicked(mouseX, mouseY, mouseButton);
+    getNetwork().mouseClicked(mouseX, mouseY, mouseButton);
     return true;
   }
 
@@ -195,20 +115,47 @@ public class ScreenNetworkRemote extends AbstractContainerScreen<ContainerNetwor
   }
 
   @Override
-  public boolean charTyped(char typedChar, int keyCode) {
-    if (network.charTyped(typedChar, keyCode)) {
-      return true;
-    }
-    return false;
+  public boolean getDownwards() {
+    return ItemStorageCraftingRemote.getDownwards(remote);
   }
 
   @Override
-  public boolean isInRegion(int x, int y, int width, int height, double mouseX, double mouseY) {
-    return super.isHovering(x, y, width, height, mouseX, mouseY);
+  public void setDownwards(boolean val) {
+    ItemStorageCraftingRemote.setDownwards(remote, val);
   }
 
   @Override
-  public void syncDataToServer() {
-    PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(null, getDownwards(), getSort(), this.isJeiSearchSynced(), this.getAutoFocus()));
+  public EnumSortType getSort() {
+    return ItemStorageCraftingRemote.getSort(remote);
+  }
+
+  @Override
+  public void setSort(EnumSortType val) {
+    ItemStorageCraftingRemote.setSort(remote, val);
+  }
+
+  @Override
+  public boolean isJeiSearchSynced() {
+    return ItemStorageCraftingRemote.isJeiSearchSynced(remote);
+  }
+
+  @Override
+  public void setJeiSearchSynced(boolean val) {
+    ItemStorageCraftingRemote.setJeiSearchSynced(remote, val);
+  }
+
+  @Override
+  public boolean getAutoFocus() {
+    return ItemStorageCraftingRemote.getAutoFocus(remote);
+  }
+
+  @Override
+  public void setAutoFocus(boolean b) {
+    ItemStorageCraftingRemote.setAutoFocus(remote, b);
+  }
+
+  @Override
+  public NetworkWidget getNetwork() {
+    return network;
   }
 }

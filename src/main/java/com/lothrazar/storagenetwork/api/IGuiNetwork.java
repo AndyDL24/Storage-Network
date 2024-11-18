@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 public interface IGuiNetwork extends IGuiPrivate {
 
-  NetworkWidget getNetworkWidget();
+  NetworkWidget getNetwork();
 
   void setStacks(List<ItemStack> stacks);
 

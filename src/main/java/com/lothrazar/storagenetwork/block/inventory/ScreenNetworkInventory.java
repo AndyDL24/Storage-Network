@@ -78,23 +78,6 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
   }
 
 
-  /**
-   * Negative is down; positive is up.
-   *
-   * @param x
-   * @param y
-   * @param mouseButton
-   * @return
-   */
-  @Override
-  public boolean mouseScrolled(double x, double y, double mouseButton) {
-    super.mouseScrolled(x, y, mouseButton);
-    if (isScrollable(x, y) && mouseButton != 0) {
-      network.mouseScrolled(mouseButton);
-    }
-    return true;
-  }
-
   @Override
   public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -149,32 +132,6 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
 
 
 
-//  @Override
-//  public void syncDataToServer() {
-//    PacketRegistry.INSTANCE.sendToServer(new SettingsSyncMessage(getPos(), getDownwards(), getSort(), isJeiSearchSynced(), getAutoFocus()));
-//  }
-
-  @Override
-  public void renderLabels(GuiGraphics ms, int mouseX, int mouseY) {
-    network.drawGuiContainerForegroundLayer(ms, mouseX, mouseY, font);
-  }
-
-  @Override
-  public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
-    ms.renderTooltip(font, stack, mousex, mousey);
-  }
-
-  @Override
-  public void drawGradient(GuiGraphics ms, int x, int y, int x2, int y2, int u, int v) {
-    ms.fillGradient(x, y, x2, y2, u, v);
-  }
-
-  @Override
-  public void setStacks(List<ItemStack> stacks) {
-    network.stacks = stacks;
-  }
-
-
 
   @Override
   public boolean getDownwards() {
@@ -221,18 +178,8 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
     tile.setAutoFocus(b);
   }
 
-  boolean isScrollable(double x, double y) {
-    int scrollHeight = 135;
-    return isHovering(0, 0,
-            this.width - 8, scrollHeight,
-            x, y);
-  }
   @Override
-  public boolean isInRegion(int x, int y, int width, int height, double mouseX, double mouseY) {
-    return super.isHovering(x, y, width, height, mouseX, mouseY);
-  }
-  @Override
-  public NetworkWidget getNetworkWidget() {
+  public NetworkWidget getNetwork() {
     return network;
   }
 

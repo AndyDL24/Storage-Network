@@ -11,6 +11,8 @@ import com.google.common.collect.Lists;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSearchPrefix;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
+import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
+import com.lothrazar.storagenetwork.block.inventory.ScreenNetworkInventory;
 import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
 import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
 import com.lothrazar.storagenetwork.network.InsertMessage;
@@ -45,7 +47,6 @@ public class NetworkWidget {
   public ButtonRequest sortBtn;
   public ButtonRequest jeiBtn;
   public ButtonRequest focusBtn;
-  private int fieldHeight = 90;
   private List<ItemSlotNetwork> slots;
   private final IGuiNetwork gui;
   private long lastClick;
@@ -54,11 +55,11 @@ public class NetworkWidget {
   private int lines = 4;
   private final int columns = 9;
   //
-//  public int networkHeight = 160;
   protected int xNetwork = 8;
   protected int yNetwork = 10;
   private Font font;
   private NetworkScreenSize size;
+  public int scrollHeight = 152;
 
   @Deprecated
   public NetworkWidget(IGuiNetwork gui) {
@@ -71,18 +72,17 @@ public class NetworkWidget {
     slots = Lists.newArrayList();
 
     switch (size) {
-      case LARGE:
-//        networkHeight = 160;
-        setLines(8);
-        setFieldHeight(172);
-      break;
       case NORMAL:
-        // networkHeight unused?
+        scrollHeight = 135;
         setLines(4);
-        setFieldHeight(90);
+        break;
+      case LARGE:
+        //scrollable area 152 ?
+        scrollHeight = 152;
+        setLines(8);
       break;
       case EXPANDED:
-//        networkHeight = 160 + 128; // was 160;
+        scrollHeight = 152 * 3; // ??
         setLines(3 * 8 - 2); // the number of rows that can fit
 //        setFieldHeight(180+180);
         this.yNetwork = -118; // :: test
@@ -93,8 +93,14 @@ public class NetworkWidget {
     lastClick = System.currentTimeMillis();
   }
 
+
+
   public List<ItemStack> getStacks() {
     return stacks;
+  }
+
+  public void setStacks(List<ItemStack> stacks) {
+    this.stacks = stacks;
   }
 
   public void applySearchTextToSlots() {
@@ -371,8 +377,21 @@ public class NetworkWidget {
   }
 
   private boolean inField(int mouseX, int mouseY) {
+    int fieldHeight = 0;
+    switch (size) {
+      case NORMAL:
+        fieldHeight = 90;
+        break;
+      case LARGE:
+        fieldHeight = 172;
+        break;
+      case EXPANDED:
+        fieldHeight = 172*2;
+        break;
+    }
+
     boolean inField = mouseX > (gui.getGuiLeft() + 7) && mouseX < (gui.getGuiLeft() + ScreenNetworkTable.WIDTH - 7)
-        && mouseY > (gui.getGuiTop() + 7) && mouseY < (gui.getGuiTop() + getFieldHeight());
+        && mouseY > (gui.getGuiTop() + 7) && mouseY < (gui.getGuiTop() + fieldHeight);
     return inField;
   }
 
@@ -444,13 +463,6 @@ public class NetworkWidget {
     }
   }
 
-  public int getFieldHeight() {
-    return fieldHeight;
-  }
-
-  public void setFieldHeight(int fieldHeight) {
-    this.fieldHeight = fieldHeight;
-  }
 
 
   public interface ISearchHandler {
