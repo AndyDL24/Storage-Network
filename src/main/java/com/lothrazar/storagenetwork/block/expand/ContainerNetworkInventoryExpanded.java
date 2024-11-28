@@ -20,7 +20,7 @@ public class ContainerNetworkInventoryExpanded extends ContainerNetwork {
   public ContainerNetworkInventoryExpanded(MenuType<?> menuType, int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {
     super(menuType, windowId);
     tile = (TileInventoryExpanded) world.getBlockEntity(pos);
-    this.yPlayer = 174 + 141;
+    this.yPlayer = 256 + 196;
     this.playerInv = playerInv;
     bindPlayerInvo(this.playerInv);
     bindHotbar();

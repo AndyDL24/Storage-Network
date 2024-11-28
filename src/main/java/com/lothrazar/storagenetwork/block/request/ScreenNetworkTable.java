@@ -54,11 +54,10 @@ public class ScreenNetworkTable extends AbstractNetworkScreen<ContainerNetworkCr
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
 
-
   @Override
   public void resize(Minecraft mc, int w, int h) {
-    super.resize(mc,w,h);
-    network.resize(mc,w,h);
+    super.resize(mc, w, h);
+    network.resize(mc, w, h);
   }
   // all the IGUINETWORK implementations
 

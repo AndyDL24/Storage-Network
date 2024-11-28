@@ -57,8 +57,8 @@ public class ScreenNetworkRemote extends AbstractNetworkScreen<ContainerNetworkR
 
   @Override
   public void resize(Minecraft mc, int w, int h) {
-    super.resize(mc,w,h);
-    network.resize(mc,w,h);
+    super.resize(mc, w, h);
+    network.resize(mc, w, h);
   }
 
   @Override

@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSearchPrefix;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
-import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
+import com.lothrazar.storagenetwork.block.expand.ScreenNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
 import com.lothrazar.storagenetwork.network.InsertMessage;
 import com.lothrazar.storagenetwork.network.RequestMessage;
@@ -54,10 +54,10 @@ public class NetworkWidget {
   private int lines = 4;
   private int columns = 9;
   public int scrollHeight = 152;
+  public int scrollWidth = 176;
   //
   public int xNetwork = 8;
   public int yNetwork = 10;
-  private boolean isCrafting;
   private NetworkScreenSize size;
 
   public NetworkWidget(IGuiNetwork gui, NetworkScreenSize size) {
@@ -74,46 +74,41 @@ public class NetworkWidget {
     switch (size) {
       case NORMAL:
         buffer = 59;
-        this.isCrafting = true;
         setLines(4);
-        break;
+      break;
       case LARGE:
-        buffer = 0;
-        this.isCrafting = false;
         setLines(4 * 2);
-        break;
+      break;
       case EXPANDED:
-        buffer = 59 - 15;
-        this.isCrafting = true;
-        this.xNetwork = 8 + 2;
-        this.yNetwork = -128;// 18; //offset for large monitors and double texture
-        setLines(4 * 5 + 1); //  the number of rows that can fit
+        buffer = -10;
+        this.xNetwork = 10; // head.height();
+        this.scrollWidth = 256;
+        setLines(ScreenNetworkInventoryExpanded.ROWS); //  the number of rows that can fit
         setColumns(9 + 4);
-        break;
+      break;
     }
     scrollHeight = (SsnConsts.SQ + 1) * this.getLines() + buffer;
     this.size = size;
   }
 
   public void init(Font font) {
-
     int x = gui.getGuiLeft() + 81;
     int y = gui.getGuiTop();
     switch (this.size) {
       case NORMAL -> {
-        y += 96; //  == 4*22 + 8// 4*21 + 12 // 4*20+16
+        y += 96; //
       }
       case LARGE -> {
-        y += 160; //  8*22 - 16is 160 is that even right // 8*21 -8 // 8*20
+        y += 160; //
       }
       case EXPANDED -> {
         x += 80;
-        y += 160 + 98 + 1; // 288 //22 rows//TODO: how much per row?
+        y += 256 + 140;
       }
     }
     searchBar = new EditBox(font,
-            x, y,
-            85, font.lineHeight, null);
+        x, y,
+        85, font.lineHeight, null);
     searchBar.setMaxLength(30);
     searchBar.setBordered(false);
     searchBar.setVisible(true);
@@ -122,17 +117,17 @@ public class NetworkWidget {
     if (ModList.get().isLoaded("jei")) {
       initJei();
     }
-      x = gui.getGuiLeft() + 6;
-      y = this.searchBar.getY() - 4;
-    if(this.size == NetworkScreenSize.EXPANDED){
+    x = gui.getGuiLeft() + 6;
+    y = this.searchBar.getY() - 4;
+    if (this.size == NetworkScreenSize.EXPANDED) {
       x += 155;
       y += 16;
     }
     directionBtn = new ButtonRequest(
-            x, y, "", (p) -> {
-      gui.setDownwards(!gui.getDownwards());
-      gui.syncDataToServer();
-    }, DEFAULT_NARRATION);
+        x, y, "", (p) -> {
+          gui.setDownwards(!gui.getDownwards());
+          gui.syncDataToServer();
+        }, DEFAULT_NARRATION);
     directionBtn.setHeight(16);
     x += 16;
     sortBtn = new ButtonRequest(x, y, "", (p) -> {
@@ -151,65 +146,18 @@ public class NetworkWidget {
     x = searchBar.getX() + searchBar.getWidth() + 2;
     y = searchBar.getY() - 2;
     focusBtn = new ButtonRequest(
-            x, y , "", (p) -> {
-      gui.setAutoFocus(!gui.getAutoFocus());
-      gui.syncDataToServer();
-    }, DEFAULT_NARRATION);
+        x, y, "", (p) -> {
+          gui.setAutoFocus(!gui.getAutoFocus());
+          gui.syncDataToServer();
+        }, DEFAULT_NARRATION);
     focusBtn.setHeight(11);
     focusBtn.setWidth(6);
-    //
-//    resizeWidgets();
   }
-  // use after init() has resolved and after size is set
-//  private void resizeWidgets() {
-//    //get new values
-//    int searchLeft = gui.getGuiLeft() + 81, searchTop = gui.getGuiTop(), width = 85;
-//
-//    switch (this.size) {
-//      case NORMAL -> {
-//        searchTop += 96; //  == 4*22 + 8// 4*21 + 12 // 4*20+16
-//      }
-//      case LARGE -> {
-//        searchTop += 160; //  8*22 - 16is 160 is that even right // 8*21 -8 // 8*20
-//      }
-//      case EXPANDED -> {
-//        searchLeft += 80;
-//        searchTop += 160 + 98 + 1; // 288 //22 rows//TODO: how much per row?
-//      }
-//    }
-//    //
-//    searchBar.setX(searchLeft);
-//    searchBar.setY(searchTop);
-//    searchBar.setWidth(width);
-//    //
-////    int btny = this.searchBar.getY() - 4;
-////    directionBtn.setY(btny);
-////    sortBtn.setY(btny);
-////    focusBtn.setY(btny + 2);
-////    if(jeiBtn != null) jeiBtn.setY(btny);
-//    //
-//  }
 
   //called by outer component
   public void resize(Minecraft mc, int width, int height) {
-
     //todo: how many rows? dynamically change size on screen resize from client
-
-/*
-    if (height > 500 && this.getSize() == NetworkScreenSize.LARGE) {
-      //expand me
-      this.setScreenSize(NetworkScreenSize.EXPANDED);
-    }
-    else if (height < 300 && this.getSize() == NetworkScreenSize.EXPANDED) {
-
-      this.setScreenSize(NetworkScreenSize.LARGE);
-    }
-    //to large or normal
-    resizeWidgets();
-*/
-
   }
-
 
   public List<ItemStack> getStacks() {
     return stacks;
@@ -287,6 +235,7 @@ public class NetworkWidget {
   int getColumns() {
     return columns;
   }
+
   void setColumns(int c) {
     this.columns = c;
   }
@@ -348,7 +297,6 @@ public class NetworkWidget {
         searchBar.getWidth(), searchBar.getHeight(), // width, height
         mouseX, mouseY);
   }
-
 
   private void initJei() {
     try {
@@ -473,10 +421,10 @@ public class NetworkWidget {
         fieldHeight = 172;
       break;
       case EXPANDED:
-        fieldHeight = 172 * 2;
+        fieldHeight = 390;
       break;
     }
-    boolean inField = mouseX > (gui.getGuiLeft() + 7) && mouseX < (gui.getGuiLeft() + ScreenNetworkTable.WIDTH - 7)
+    boolean inField = mouseX > (gui.getGuiLeft() + 7) && mouseX < (gui.getGuiLeft() + this.scrollWidth - 7)
         && mouseY > (gui.getGuiTop() + 7) && mouseY < (gui.getGuiTop() + fieldHeight);
     return inField;
   }
