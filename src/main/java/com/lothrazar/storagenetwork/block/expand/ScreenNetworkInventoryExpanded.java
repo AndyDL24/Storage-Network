@@ -17,13 +17,14 @@ import net.minecraftforge.fml.ModList;
 
 public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<ContainerNetworkInventoryExpanded> {
 
+  protected int W = 256;
   protected int HEIGHT = 256;
-  public int WIDTH = 176;
   //i know they could all be in the same png file and i pull out sprites from it, but split images is easier to work with
-  private TileableTexture head = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head.png"), WIDTH, 10);
-  private TileableTexture row = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row.png"), WIDTH, SsnConsts.SQ);
-  private TileableTexture crafting = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting.png"), WIDTH, 58);
-  private TileableTexture player = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_player.png"), WIDTH, 104);
+  private TileableTexture head = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head.png"), W, 10);
+  private TileableTexture row = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row.png"), W, SsnConsts.SQ);
+//  private TileableTexture search = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_search.png"), W, 19);
+  private TileableTexture crafting = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting.png"), W, 66);
+  private TileableTexture player = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_player.png"), 176 , 84);
 
   protected final NetworkWidget network;
   private TileInventoryExpanded tile;
@@ -33,7 +34,7 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     tile = container.tile;
     network = new NetworkWidget(this, NetworkScreenSize.EXPANDED);
     imageHeight = HEIGHT;
-    imageWidth = WIDTH;
+    imageWidth = W;
   }
 
   @Override
@@ -57,22 +58,30 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     int xCenter = (width - imageWidth) / 2;
     int yCenter = (height - imageHeight) / 2;
     //render the top
-    int ypos = yCenter - imageHeight / 2;
-    ms.blit(head.texture(), xCenter, ypos, 0, 0, imageWidth, head.height());
+    int xpos = xCenter;
+    int ypos = yCenter - imageHeight / 2 - SsnConsts.SQ/2;
+    blitSegment(ms, head, xpos, ypos);
+    ypos += head.height();
     //render the rows
-    // -1 for the top header row, and pixel to math ratio of 2x
-    final int textureLines = (network.getLines() - 1)*2;
-    for(int line = 0; line < textureLines; line++) {
 
-      ypos += head.height();
-      ms.blit(row.texture(), xCenter, ypos, 0, 0, imageWidth, row.height());
+    for(int line = 0; line < network.getLines(); line++) {
+      blitSegment(ms, row, xpos, ypos);
+      ypos += row.height();
     }
-    //render player inventory
-    ypos = ypos - 12; //border buffers of 8+4 overlap
-    ms.blit(player.texture(), xCenter, ypos, 0, imageHeight, imageWidth, imageHeight);
+
+
+    blitSegment(ms, crafting, xpos, ypos);
+    ypos += crafting.height();
+
+    ypos = ypos - 4; // overlap
+    ms.blit(player.texture(), xpos, ypos, 0, imageHeight, imageWidth, imageHeight);
     //update network
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
+  }
+
+  private void blitSegment(GuiGraphics ms, TileableTexture tt, int xpos, int ypos) {
+    ms.blit(tt.texture(), xpos, ypos, 0, 0, tt.width(), tt.height());
   }
 
   @Override

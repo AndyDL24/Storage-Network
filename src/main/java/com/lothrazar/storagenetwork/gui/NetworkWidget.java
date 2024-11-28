@@ -48,44 +48,168 @@ public class NetworkWidget {
   private List<ItemSlotNetwork> slots;
   private final IGuiNetwork gui;
   private long lastClick;
+  //
   private int page = 1;
   private int maxPage = 1;
   private int lines = 4;
-  private final int columns = 9;
+  private int columns = 9;
+  public int scrollHeight = 152;
+  //
   public int xNetwork = 8;
   public int yNetwork = 10;
-  private Font font;
+  private boolean isCrafting;
   private NetworkScreenSize size;
-  public int scrollHeight = 152;
-
-  @Deprecated
-  public NetworkWidget(IGuiNetwork gui) {
-    this(gui, NetworkScreenSize.NORMAL);
-  }
 
   public NetworkWidget(IGuiNetwork gui, NetworkScreenSize size) {
     this.gui = gui;
     stacks = Lists.newArrayList();
     slots = Lists.newArrayList();
-    switch (size) {
-      case NORMAL:
-        setLines(4);
-        scrollHeight = 135;
-      break;
-      case LARGE:
-        setLines(4 * 2);
-        scrollHeight = (SsnConsts.SQ + 1) * this.getLines(); // 152;
-      break;
-      case EXPANDED:
-        this.yNetwork = -118; //offset for large monitors and double texture
-        setLines(4 * 5 + 2); // 22 the number of rows that can fit
-        scrollHeight = (SsnConsts.SQ + 1) * this.getLines(); //   19*22=418
-      break;
-    }
-    this.size = size;
+    setScreenSize(size);
     PacketRegistry.INSTANCE.sendToServer(new RequestMessage());
     lastClick = System.currentTimeMillis();
   }
+
+  private void setScreenSize(NetworkScreenSize size) {
+    int buffer = 0;
+    switch (size) {
+      case NORMAL:
+        buffer = 59;
+        this.isCrafting = true;
+        setLines(4);
+        break;
+      case LARGE:
+        buffer = 0;
+        this.isCrafting = false;
+        setLines(4 * 2);
+        break;
+      case EXPANDED:
+        buffer = 59 - 15;
+        this.isCrafting = true;
+        this.xNetwork = 8 + 2;
+        this.yNetwork = -128;// 18; //offset for large monitors and double texture
+        setLines(4 * 5 + 1); //  the number of rows that can fit
+        setColumns(9 + 4);
+        break;
+    }
+    scrollHeight = (SsnConsts.SQ + 1) * this.getLines() + buffer;
+    this.size = size;
+  }
+
+  public void init(Font font) {
+
+    int x = gui.getGuiLeft() + 81;
+    int y = gui.getGuiTop();
+    switch (this.size) {
+      case NORMAL -> {
+        y += 96; //  == 4*22 + 8// 4*21 + 12 // 4*20+16
+      }
+      case LARGE -> {
+        y += 160; //  8*22 - 16is 160 is that even right // 8*21 -8 // 8*20
+      }
+      case EXPANDED -> {
+        x += 80;
+        y += 160 + 98 + 1; // 288 //22 rows//TODO: how much per row?
+      }
+    }
+    searchBar = new EditBox(font,
+            x, y,
+            85, font.lineHeight, null);
+    searchBar.setMaxLength(30);
+    searchBar.setBordered(false);
+    searchBar.setVisible(true);
+    searchBar.setTextColor(16777215);
+    //    searchBar.setFocus(StorageNetwork.CONFIG.enableAutoSearchFocus());
+    if (ModList.get().isLoaded("jei")) {
+      initJei();
+    }
+      x = gui.getGuiLeft() + 6;
+      y = this.searchBar.getY() - 4;
+    if(this.size == NetworkScreenSize.EXPANDED){
+      x += 155;
+      y += 16;
+    }
+    directionBtn = new ButtonRequest(
+            x, y, "", (p) -> {
+      gui.setDownwards(!gui.getDownwards());
+      gui.syncDataToServer();
+    }, DEFAULT_NARRATION);
+    directionBtn.setHeight(16);
+    x += 16;
+    sortBtn = new ButtonRequest(x, y, "", (p) -> {
+      gui.setSort(gui.getSort().next());
+      gui.syncDataToServer();
+    }, DEFAULT_NARRATION);
+    sortBtn.setHeight(16);
+    x += 16;
+    if (ModList.get().isLoaded("jei")) {
+      jeiBtn = new ButtonRequest(x, y, "", (p) -> {
+        gui.setJeiSearchSynced(!gui.isJeiSearchSynced());
+        gui.syncDataToServer();
+      }, DEFAULT_NARRATION);
+      jeiBtn.setHeight(16);
+    }
+    x = searchBar.getX() + searchBar.getWidth() + 2;
+    y = searchBar.getY() - 2;
+    focusBtn = new ButtonRequest(
+            x, y , "", (p) -> {
+      gui.setAutoFocus(!gui.getAutoFocus());
+      gui.syncDataToServer();
+    }, DEFAULT_NARRATION);
+    focusBtn.setHeight(11);
+    focusBtn.setWidth(6);
+    //
+//    resizeWidgets();
+  }
+  // use after init() has resolved and after size is set
+//  private void resizeWidgets() {
+//    //get new values
+//    int searchLeft = gui.getGuiLeft() + 81, searchTop = gui.getGuiTop(), width = 85;
+//
+//    switch (this.size) {
+//      case NORMAL -> {
+//        searchTop += 96; //  == 4*22 + 8// 4*21 + 12 // 4*20+16
+//      }
+//      case LARGE -> {
+//        searchTop += 160; //  8*22 - 16is 160 is that even right // 8*21 -8 // 8*20
+//      }
+//      case EXPANDED -> {
+//        searchLeft += 80;
+//        searchTop += 160 + 98 + 1; // 288 //22 rows//TODO: how much per row?
+//      }
+//    }
+//    //
+//    searchBar.setX(searchLeft);
+//    searchBar.setY(searchTop);
+//    searchBar.setWidth(width);
+//    //
+////    int btny = this.searchBar.getY() - 4;
+////    directionBtn.setY(btny);
+////    sortBtn.setY(btny);
+////    focusBtn.setY(btny + 2);
+////    if(jeiBtn != null) jeiBtn.setY(btny);
+//    //
+//  }
+
+  //called by outer component
+  public void resize(Minecraft mc, int width, int height) {
+
+    //todo: how many rows? dynamically change size on screen resize from client
+
+/*
+    if (height > 500 && this.getSize() == NetworkScreenSize.LARGE) {
+      //expand me
+      this.setScreenSize(NetworkScreenSize.EXPANDED);
+    }
+    else if (height < 300 && this.getSize() == NetworkScreenSize.EXPANDED) {
+
+      this.setScreenSize(NetworkScreenSize.LARGE);
+    }
+    //to large or normal
+    resizeWidgets();
+*/
+
+  }
+
 
   public List<ItemStack> getStacks() {
     return stacks;
@@ -163,6 +287,9 @@ public class NetworkWidget {
   int getColumns() {
     return columns;
   }
+  void setColumns(int c) {
+    this.columns = c;
+  }
 
   public void setLines(int v) {
     lines = v;
@@ -222,37 +349,6 @@ public class NetworkWidget {
         mouseX, mouseY);
   }
 
-  public void init(Font font) {
-    this.font = font;
-    int searchLeft = gui.getGuiLeft() + 81, searchTop = gui.getGuiTop(), width = 85;
-    switch (this.size) {
-      case NORMAL -> {
-        searchTop += 96;
-      }
-      case LARGE -> {
-        searchTop += 160;
-      }
-      case EXPANDED -> {
-        searchTop += 160 + 128;
-      }
-    }
-    initSearchbar(searchLeft, searchTop, width);
-    initButtons();
-  }
-
-  private void initSearchbar(int searchLeft, int searchTop, int width) {
-    searchBar = new EditBox(font,
-        searchLeft, searchTop,
-        width, font.lineHeight, null);
-    searchBar.setMaxLength(30);
-    searchBar.setBordered(false);
-    searchBar.setVisible(true);
-    searchBar.setTextColor(16777215);
-    //    searchBar.setFocus(StorageNetwork.CONFIG.enableAutoSearchFocus());
-    if (ModList.get().isLoaded("jei")) {
-      initJei();
-    }
-  }
 
   private void initJei() {
     try {
@@ -385,35 +481,6 @@ public class NetworkWidget {
     return inField;
   }
 
-  private void initButtons() {
-    int y = this.searchBar.getY() - 4;
-    directionBtn = new ButtonRequest(
-        gui.getGuiLeft() + 6, y, "", (p) -> {
-          gui.setDownwards(!gui.getDownwards());
-          gui.syncDataToServer();
-        }, DEFAULT_NARRATION);
-    directionBtn.setHeight(16);
-    sortBtn = new ButtonRequest(gui.getGuiLeft() + 22, y, "", (p) -> {
-      gui.setSort(gui.getSort().next());
-      gui.syncDataToServer();
-    }, DEFAULT_NARRATION);
-    sortBtn.setHeight(16);
-    if (ModList.get().isLoaded("jei")) {
-      jeiBtn = new ButtonRequest(gui.getGuiLeft() + 38, y, "", (p) -> {
-        gui.setJeiSearchSynced(!gui.isJeiSearchSynced());
-        gui.syncDataToServer();
-      }, DEFAULT_NARRATION);
-      jeiBtn.setHeight(16);
-    }
-    focusBtn = new ButtonRequest(
-        gui.getGuiLeft() + 166, y + 2, "", (p) -> {
-          gui.setAutoFocus(!gui.getAutoFocus());
-          gui.syncDataToServer();
-        }, DEFAULT_NARRATION);
-    focusBtn.setHeight(11);
-    focusBtn.setWidth(6);
-  }
-
   public void sortStackWrappers(List<ItemStack> stacksToDisplay) {
     Collections.sort(stacksToDisplay, new Comparator<ItemStack>() {
 
@@ -451,12 +518,5 @@ public class NetworkWidget {
     if (jeiBtn != null && ModList.get().isLoaded("jei")) {
       jeiBtn.setTextureId(gui.isJeiSearchSynced() ? TextureEnum.JEI_GREEN : TextureEnum.JEI_RED);
     }
-  }
-
-  public void resize(Minecraft mc, int width, int height) {
-
-    //todo: how many rows? dynamically change size on screen resize from client
-   //System.out.println("resized  width="+width);
-   // System.out.println("resized height="+height);
   }
 }
