@@ -4,7 +4,8 @@ import java.util.List;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
-import com.lothrazar.storagenetwork.gui.TextboxInteger;
+import com.lothrazar.storagenetwork.gui.TileableTexture;
+import com.lothrazar.storagenetwork.gui.components.TextboxInteger;
 import com.lothrazar.storagenetwork.jei.JeiHooks;
 import com.lothrazar.storagenetwork.network.ClearRecipeMessage;
 import com.lothrazar.storagenetwork.network.RequestMessage;
@@ -109,6 +110,10 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
       }
     }
     return true;
+  }
+
+  protected void blitSegment(GuiGraphics ms, TileableTexture tt, int xpos, int ypos) {
+    ms.blit(tt.texture(), xpos, ypos, 0, 0, tt.width(), tt.height());
   }
 
   @Override

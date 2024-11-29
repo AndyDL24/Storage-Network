@@ -1,4 +1,4 @@
-package com.lothrazar.storagenetwork.gui;
+package com.lothrazar.storagenetwork.gui.components;
 
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.mojang.blaze3d.platform.GlStateManager;

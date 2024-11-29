@@ -12,7 +12,9 @@ import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSearchPrefix;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
 import com.lothrazar.storagenetwork.block.expand.ScreenNetworkInventoryExpanded;
-import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
+import com.lothrazar.storagenetwork.gui.components.ButtonRequest;
+import com.lothrazar.storagenetwork.gui.components.ButtonRequest.TextureEnum;
+import com.lothrazar.storagenetwork.gui.slot.ItemSlotNetwork;
 import com.lothrazar.storagenetwork.network.InsertMessage;
 import com.lothrazar.storagenetwork.network.RequestMessage;
 import com.lothrazar.storagenetwork.registry.PacketRegistry;
@@ -155,6 +157,7 @@ public class NetworkWidget {
   }
 
   //called by outer component
+  @Deprecated
   public void resize(Minecraft mc, int width, int height) {
     //todo: how many rows? dynamically change size on screen resize from client
   }

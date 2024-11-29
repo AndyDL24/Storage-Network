@@ -29,8 +29,6 @@ public class TileRequest extends TileConnectable implements MenuProvider, ITileN
   private EnumSortType sort = EnumSortType.NAME;
   private boolean isJeiSearchSynced;
   private boolean autoFocus = true;
-  @Deprecated
-  private Map<Integer, ItemStack> matrix = new HashMap<>();
 
   public TileRequest(BlockPos pos, BlockState state) {
     super(SsnRegistry.Tiles.REQUEST.get(), pos, state);
@@ -46,26 +44,6 @@ public class TileRequest extends TileConnectable implements MenuProvider, ITileN
     if (compound.contains(NBT_JEI)) {
       this.setJeiSearchSynced(compound.getBoolean(NBT_JEI));
     }
-    //legacy support: instead of deleting items, in this one-off world upgrade transition
-    //drop them on the ground
-    //then forever more it will not be saved to this data location
-    if (compound.contains("matrix")) {
-      ListTag invList = compound.getList("matrix", Tag.TAG_COMPOUND);
-      for (int i = 0; i < invList.size(); i++) {
-        CompoundTag stackTag = invList.getCompound(i);
-        int slot = stackTag.getByte("Slot");
-        ItemStack s = ItemStack.of(stackTag);
-        if (level != null) {
-          StorageNetworkMod.LOGGER.info("world upgrade: item dropping onluy once so it doesnt get deleted; " + this.worldPosition + ":" + s);
-          UtilInventory.dropItem(level, this.worldPosition, s);
-          matrix.put(slot, ItemStack.EMPTY);
-        }
-        else {
-          //i was not able to drop it in the world. save it so its not deleted. will be hidden from player
-          matrix.put(slot, s);
-        }
-      }
-    }
     super.load(compound);
   }
 
@@ -75,26 +53,6 @@ public class TileRequest extends TileConnectable implements MenuProvider, ITileN
     compound.putBoolean(NBT_DIR, isDownwards());
     compound.putInt(NBT_SORT, getSort().ordinal());
     compound.putBoolean(NBT_JEI, this.isJeiSearchSynced());
-    if (matrix != null) {
-      ListTag invList = new ListTag();
-      for (int i = 0; i < 9; i++) {
-        if (matrix.get(i) != null && matrix.get(i).isEmpty() == false) {
-          if (level != null) {
-            StorageNetworkMod.LOGGER.info("World Upgrade: item dropping only once so it doesnt get deleted; " + this.worldPosition + ":" + matrix.get(i));
-            UtilInventory.dropItem(level, this.worldPosition, matrix.get(i));
-            matrix.put(i, ItemStack.EMPTY);
-          }
-          else {
-            //i was not able to drop it in the world. keep saving it and never delete items. will be hidden from player
-            CompoundTag stackTag = new CompoundTag();
-            stackTag.putByte("Slot", (byte) i);
-            matrix.get(i).save(stackTag);
-            invList.add(stackTag);
-          }
-        }
-      }
-      compound.put("matrix", invList);
-    }
   }
 
   @Override

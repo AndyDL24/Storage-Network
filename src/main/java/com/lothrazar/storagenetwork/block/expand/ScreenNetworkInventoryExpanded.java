@@ -19,11 +19,9 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
 
   public static final int ROWS = 4 * 5 + 1;
   protected int W = 256;
-  //  protected int HEIGHT = 256;
   //i know they could all be in the same png file and i pull out sprites from it, but split images is easier to work with
   private TileableTexture head = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head.png"), W, 10);
   private TileableTexture row = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row.png"), W, SsnConsts.SQ);
-  //  private TileableTexture search = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_search.png"), W, 19);
   private TileableTexture crafting = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting.png"), W, 66);
   private TileableTexture player = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_player.png"), 176, 84);
   protected final NetworkWidget network;
@@ -59,7 +57,7 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     final int yCenter = (height - imageHeight) / 2;
     //render the top
     int xpos = xCenter;
-    int ypos = yCenter;// - imageHeight / 2 - SsnConsts.SQ/2;
+    int ypos = yCenter;
     blitSegment(ms, head, xpos, ypos);
     ypos += head.height();
     //render the rows
@@ -74,10 +72,6 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     //update network
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
-  }
-
-  private void blitSegment(GuiGraphics ms, TileableTexture tt, int xpos, int ypos) {
-    ms.blit(tt.texture(), xpos, ypos, 0, 0, tt.width(), tt.height());
   }
 
   @Override

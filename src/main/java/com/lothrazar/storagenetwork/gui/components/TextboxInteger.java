@@ -1,4 +1,4 @@
-package com.lothrazar.storagenetwork.gui;
+package com.lothrazar.storagenetwork.gui.components;
 //package com.lothrazar.cyclic.gui;
 
 import com.lothrazar.storagenetwork.network.CableIOMessage;

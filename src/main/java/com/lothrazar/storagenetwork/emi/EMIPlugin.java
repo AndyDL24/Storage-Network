@@ -1,5 +1,6 @@
 package com.lothrazar.storagenetwork.emi;
 
+import com.lothrazar.storagenetwork.block.expand.ScreenNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.block.request.ContainerNetworkCraftingTable;
 import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
 import com.lothrazar.storagenetwork.gui.ISearchHandler;
@@ -26,7 +27,7 @@ public class EMIPlugin implements EmiPlugin {
     registry.addRecipeHandler(SsnRegistry.Menus.CRAFTING_REMOTE.get(), new EmiTransferHandler<ContainerNetworkCraftingRemote>());
     //        registry.addGenericDragDropHandler(new EmiGhostIngredientHandler());
     registry.addGenericStackProvider((scr, x, y) -> {
-      if (scr instanceof ScreenNetworkTable || scr instanceof ScreenNetworkCraftingRemote) {
+      if (scr instanceof ScreenNetworkTable || scr instanceof ScreenNetworkCraftingRemote || scr instanceof ScreenNetworkInventoryExpanded) {
         net.minecraft.world.inventory.Slot sl = ((AbstractContainerScreen<?>) scr).getSlotUnderMouse();
         if (sl != null) return new EmiStackInteraction(EmiStack.of(sl.getItem()), null, false);
       }

@@ -43,17 +43,22 @@ public abstract class ContainerNetwork extends AbstractContainerMenu {
   protected boolean recipeLocked = false;
   protected Player player;
   protected CraftingRecipe recipeCurrent;
-  public NetworkCraftingInventory matrix;
+  private NetworkCraftingInventory matrix;
   protected int xPlayer = 8;
   protected int yPlayer = 174;
+  protected int yCrafting = this.yPlayer - 64;
 
   protected ContainerNetwork(MenuType<?> type, int id) {
     super(type, id);
     this.resultInventory = new ResultContainer();
   }
 
-  public CraftingContainer getCraftMatrix() {
+  public NetworkCraftingInventory getCraftMatrix() {
     return matrix;
+  }
+
+  public void setCraftMatrix(NetworkCraftingInventory matrixIn) {
+    matrix = matrixIn;
   }
 
   public abstract boolean isCrafting();
@@ -98,7 +103,7 @@ public abstract class ContainerNetwork extends AbstractContainerMenu {
     //3x3 crafting grid
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 3; ++j) {
-        Slot slot = addSlot(new Slot(matrix, index++, 8 + j * SsnConsts.SQ, 110 + i * SsnConsts.SQ));
+        Slot slot = addSlot(new Slot(matrix, index++, 8 + j * SsnConsts.SQ, yCrafting + i * SsnConsts.SQ));
         playerSlots.add(slot);
       }
     }

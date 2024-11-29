@@ -1,4 +1,4 @@
-package com.lothrazar.storagenetwork.block.request;
+package com.lothrazar.storagenetwork.gui.slot;
 
 import java.util.List;
 import com.google.common.collect.Lists;
@@ -27,17 +27,17 @@ public class SlotCraftingNetwork extends ResultSlot {
       return;
     }
     List<ItemStack> lis = Lists.newArrayList();
-    for (int i = 0; i < parent.matrix.getContainerSize(); i++) {
-      lis.add(parent.matrix.getItem(i).copy());
+    for (int i = 0; i < parent.getCraftMatrix().getContainerSize(); i++) {
+      lis.add(parent.getCraftMatrix().getItem(i).copy());
     }
     super.onTake(playerIn, stack);
     parent.broadcastChanges();
-    for (int i = 0; i < parent.matrix.getContainerSize(); i++) {
-      if (parent.matrix.getItem(i).isEmpty() && getTileMain() != null) {
+    for (int i = 0; i < parent.getCraftMatrix().getContainerSize(); i++) {
+      if (parent.getCraftMatrix().getItem(i).isEmpty() && getTileMain() != null) {
         ItemStack req = getTileMain().request(
             !lis.get(i).isEmpty() ? new ItemStackMatcher(lis.get(i), false, false) : null, 1, false);
         if (!req.isEmpty()) {
-          parent.matrix.setItem(i, req);
+          parent.getCraftMatrix().setItem(i, req);
         }
       }
     }
