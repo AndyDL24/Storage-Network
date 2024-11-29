@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSearchPrefix;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
-import com.lothrazar.storagenetwork.block.expand.ScreenNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.gui.components.ButtonRequest;
 import com.lothrazar.storagenetwork.gui.components.ButtonRequest.TextureEnum;
 import com.lothrazar.storagenetwork.gui.slot.ItemSlotNetwork;
@@ -60,37 +59,35 @@ public class NetworkWidget {
   //
   public int xNetwork = 8;
   public int yNetwork = 10;
-  private NetworkScreenSize size;
+  private final NetworkScreenSize size;
 
   public NetworkWidget(IGuiNetwork gui, NetworkScreenSize size) {
     this.gui = gui;
     stacks = Lists.newArrayList();
     slots = Lists.newArrayList();
-    setScreenSize(size);
+    this.size = size;
+    setScreenSize();
     PacketRegistry.INSTANCE.sendToServer(new RequestMessage());
     lastClick = System.currentTimeMillis();
   }
 
-  private void setScreenSize(NetworkScreenSize size) {
+  private void setScreenSize() {
     int buffer = 0;
+    setLines(size.lines());
+    setColumns(size.columns());
     switch (size) {
       case NORMAL:
         buffer = 59;
-        setLines(4);
       break;
       case LARGE:
-        setLines(4 * 2);
       break;
       case EXPANDED:
         buffer = -10;
         this.xNetwork = 10; // head.height();
-        this.scrollWidth = 256;
-        setLines(ScreenNetworkInventoryExpanded.ROWS); //  the number of rows that can fit
-        setColumns(9 + 4);
+        this.scrollWidth = 256 + 12 * 18; //imageWidth
       break;
     }
     scrollHeight = (SsnConsts.SQ + 1) * this.getLines() + buffer;
-    this.size = size;
   }
 
   public void init(Font font) {
@@ -393,25 +390,23 @@ public class NetworkWidget {
       }
     }
     LocalPlayer player = Minecraft.getInstance().player;
-    if (player == null) {
+    if (player == null || !this.canClick()) {
       return;
     }
     ItemStack stackCarriedByMouse = player.containerMenu.getCarried();
     if (!stackUnderMouse.isEmpty()
         && (mouseButton == UtilTileEntity.MOUSE_BTN_LEFT || mouseButton == UtilTileEntity.MOUSE_BTN_RIGHT)
-        && stackCarriedByMouse.isEmpty() &&
-        this.canClick()) {
+        && stackCarriedByMouse.isEmpty()) {
       // Request an item (from the network) if we are in the upper section of the GUI 
       PacketRegistry.INSTANCE.sendToServer(new RequestMessage(mouseButton, this.stackUnderMouse.copy(), Screen.hasShiftDown(),
           Screen.hasAltDown() || Screen.hasControlDown()));
       this.lastClick = System.currentTimeMillis();
     }
-    else if (!stackCarriedByMouse.isEmpty() && inField((int) mouseX, (int) mouseY) &&
-        this.canClick()) {
-          // Insert the item held by the mouse into the network
-          PacketRegistry.INSTANCE.sendToServer(new InsertMessage(0, mouseButton));
-          this.lastClick = System.currentTimeMillis();
-        }
+    else if (!stackCarriedByMouse.isEmpty() && inField((int) mouseX, (int) mouseY)) {
+      // Insert the item held by the mouse into the network
+      PacketRegistry.INSTANCE.sendToServer(new InsertMessage(0, mouseButton));
+      this.lastClick = System.currentTimeMillis();
+    }
   }
 
   private boolean inField(int mouseX, int mouseY) {

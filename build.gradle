@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
 }
 
 version = "${mc_version}-${mod_version}"
@@ -119,7 +119,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 
-  flatDir { dir 'libs' } 
+ // flatDir { dir 'libs' }
   maven {
     // location of the maven that hosts JEI files
     name = "Progwml6 maven"
@@ -147,7 +147,8 @@ dependencies {
     // The "userdev" classifier will be requested and setup by ForgeGradle.
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    // minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft "net.neoforged:forge:${mc_version}-${forge_version}"
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -159,15 +160,21 @@ dependencies {
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}+${mc_version}")
 
 
-  //  implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${mc_version}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${mc_version}:api")
      
 
 
      compileOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_version}-${patchouli_version}-FORGE:api")
      runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_version}-${patchouli_version}-FORGE")
-     
+
+//optional deps
+
+    compileOnly fg.deobf("vazkii.botania:Botania:${mc_version}-443-FORGE:api")
+    runtimeOnly fg.deobf("vazkii.botania:Botania:${mc_version}-443-FORGE")
+
+    implementation fg.deobf("curse.maven:cyclic-239286:5940363")
+
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
@@ -184,11 +191,9 @@ dependencies {
 // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            mc_version: mc_version,
+            mod_id: mod_id,
+            mod_version: mod_version
     ]
     inputs.properties replaceProperties
 
@@ -202,11 +207,11 @@ tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : mod_authors,
+                'Specification-Vendor'    : 'Lothrazar',
                 'Specification-Version'   : '1', // We are version 1 of ourselves
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Vendor'   : 'Lothrazar',
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
@@ -215,10 +220,6 @@ tasks.named('jar', Jar).configure {
     finalizedBy 'reobfJar'
 }
 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing:
-// tasks.named('publish').configure {
-//     dependsOn 'reobfJar'
-// }
 
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {
@@ -233,6 +234,7 @@ publishing {
         }
     }
 }
+
 task signJar(type: SignJar, dependsOn: jar) {
 
     // findProperty allows us to reference the property without it existing. 
@@ -245,10 +247,10 @@ task signJar(type: SignJar, dependsOn: jar) {
     inputFile = jar.archivePath
     outputFile = jar.archivePath
 }
+
 task cleanJar {
   delete 'build/libs'
 }
-
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation

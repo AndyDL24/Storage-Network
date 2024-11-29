@@ -17,12 +17,14 @@ import net.minecraftforge.fml.ModList;
 
 public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<ContainerNetworkInventoryExpanded> {
 
-  public static final int ROWS = 4 * 5 + 1;
   protected int W = 256;
   //i know they could all be in the same png file and i pull out sprites from it, but split images is easier to work with
   private TileableTexture head = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head.png"), W, 10);
+  private TileableTexture head_right = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head_right.png"), W, 10);
   private TileableTexture row = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row.png"), W, SsnConsts.SQ);
+  private TileableTexture row_right = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row_right.png"), W, SsnConsts.SQ);
   private TileableTexture crafting = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting.png"), W, 66);
+  private TileableTexture crafting_right = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting_right.png"), W, 66);
   private TileableTexture player = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_player.png"), 176, 84);
   protected final NetworkWidget network;
   private TileInventoryExpanded tile;
@@ -31,8 +33,10 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     super(container, inv, name);
     tile = container.tile;
     network = new NetworkWidget(this, NetworkScreenSize.EXPANDED);
-    imageHeight = player.height() + crafting.height() + row.height() * ROWS + head.height();
-    imageWidth = W;
+    imageHeight = player.height() + crafting.height()
+        + row.height() * NetworkScreenSize.EXPANDED.lines()
+        + head.height();
+    imageWidth = W + 12 * 18;//scrollWidth
   }
 
   @Override
@@ -59,16 +63,18 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     int xpos = xCenter;
     int ypos = yCenter;
     blitSegment(ms, head, xpos, ypos);
+    blitSegment(ms, head_right, xpos + W, ypos);
     ypos += head.height();
     //render the rows
     for (int line = 0; line < network.getLines(); line++) {
       blitSegment(ms, row, xpos, ypos);
+      blitSegment(ms, row_right, xpos + W, ypos);
       ypos += row.height();
     }
     blitSegment(ms, crafting, xpos, ypos);
+    blitSegment(ms, crafting_right, xpos + W, ypos);
     ypos += crafting.height() - 4;
     blitSegment(ms, player, xpos, ypos);
-    // ms.blit(player.texture(), xpos, ypos, 0, imageHeight, imageWidth, imageHeight);
     //update network
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
