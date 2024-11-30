@@ -7,9 +7,9 @@ import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.IGuiPrivate;
 import com.lothrazar.storagenetwork.block.cable.inputfilter.ScreenCableImportFilter;
 import com.lothrazar.storagenetwork.capability.handler.FilterItemStackHandler;
-import com.lothrazar.storagenetwork.gui.ButtonRequest;
-import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
-import com.lothrazar.storagenetwork.gui.ItemSlotNetwork;
+import com.lothrazar.storagenetwork.gui.components.ButtonRequest;
+import com.lothrazar.storagenetwork.gui.components.ButtonRequest.TextureEnum;
+import com.lothrazar.storagenetwork.gui.slot.ItemSlotNetwork;
 import com.lothrazar.storagenetwork.network.CableDataMessage;
 import com.lothrazar.storagenetwork.registry.PacketRegistry;
 import com.lothrazar.storagenetwork.util.SsnConsts;
@@ -124,7 +124,7 @@ public class ScreenCableFilter extends AbstractContainerScreen<ContainerCableFil
     }
   }
 
-  public static final int SLOT_SIZE = SsnConsts.SLOT_SIZE;
+  public static final int SLOT_SIZE = SsnConsts.SQ;
 
   @Override
   public void renderStackTooltip(GuiGraphics ms, ItemStack stack, int mousex, int mousey) {
@@ -138,9 +138,6 @@ public class ScreenCableFilter extends AbstractContainerScreen<ContainerCableFil
 
   @Override
   protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-    //    minecraft.getTextureManager().bind(texture);
-    //    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-    //    RenderSystem.setShaderTexture(0, texture);
     int xCenter = (width - imageWidth) / 2;
     int yCenter = (height - imageHeight) / 2;
     ms.blit(texture, xCenter, yCenter, 0, 0, imageWidth, imageHeight);

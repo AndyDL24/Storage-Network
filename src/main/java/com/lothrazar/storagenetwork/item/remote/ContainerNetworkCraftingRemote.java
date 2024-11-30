@@ -6,9 +6,9 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.DimPos;
 import com.lothrazar.storagenetwork.block.main.TileMain;
-import com.lothrazar.storagenetwork.block.request.SlotCraftingNetwork;
 import com.lothrazar.storagenetwork.gui.ContainerNetwork;
 import com.lothrazar.storagenetwork.gui.NetworkCraftingInventory;
+import com.lothrazar.storagenetwork.gui.slot.SlotCraftingNetwork;
 import com.lothrazar.storagenetwork.registry.SsnRegistry;
 import com.lothrazar.storagenetwork.util.UtilInventory;
 import net.minecraft.world.Container;
@@ -37,15 +37,15 @@ public class ContainerNetworkCraftingRemote extends ContainerNetwork {
     else {
       this.root = dp.getTileEntity(TileMain.class, player.level());
     }
-    matrix = new NetworkCraftingInventory(this, matrixStacks);
+    setCraftMatrix(new NetworkCraftingInventory(this, matrixStacks));
     this.playerInv = pInv;
-    SlotCraftingNetwork slotCraftOutput = new SlotCraftingNetwork(this, playerInv.player, matrix, resultInventory, 0, 101, 128);
+    SlotCraftingNetwork slotCraftOutput = new SlotCraftingNetwork(this, playerInv.player, getCraftMatrix(), resultInventory, 0, 101, 128);
     slotCraftOutput.setTileMain(getTileMain());
     addSlot(slotCraftOutput);
     bindGrid();
     bindPlayerInvo(this.playerInv);
     bindHotbar();
-    slotsChanged(matrix);
+    slotsChanged(getCraftMatrix());
   }
 
   @Override
@@ -77,8 +77,8 @@ public class ContainerNetworkCraftingRemote extends ContainerNetwork {
   @Override
   public void removed(Player playerIn) {
     super.removed(playerIn);
-    for (int i = 0; i < matrix.getContainerSize(); i++) {
-      UtilInventory.dropItem(player.level(), playerIn.blockPosition(), matrix.getItem(i));
+    for (int i = 0; i < getCraftMatrix().getContainerSize(); i++) {
+      UtilInventory.dropItem(player.level(), playerIn.blockPosition(), getCraftMatrix().getItem(i));
     }
   }
 

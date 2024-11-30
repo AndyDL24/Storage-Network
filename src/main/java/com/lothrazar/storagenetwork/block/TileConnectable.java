@@ -2,6 +2,7 @@ package com.lothrazar.storagenetwork.block;
 
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.DimPos;
+import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.main.TileMain;
 import com.lothrazar.storagenetwork.capability.CapabilityConnectable;
 import com.lothrazar.storagenetwork.registry.StorageNetworkCapabilities;
@@ -20,13 +21,21 @@ import net.minecraftforge.common.util.LazyOptional;
 /**
  * Base class for Cable, Control, Request
  */
-public class TileConnectable extends BlockEntity {
+public abstract class TileConnectable extends BlockEntity {
 
   private final CapabilityConnectable connectable;
 
   public TileConnectable(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
     super(tileEntityTypeIn, pos, state);
     connectable = new CapabilityConnectable();
+  }
+
+  public EnumSortType getSort() {
+    return EnumSortType.NAME; //unused by some blocks
+  }
+
+  public boolean isDownwards() {
+    return false; //unused by some blocks
   }
 
   @Override

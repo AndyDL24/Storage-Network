@@ -12,6 +12,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileInventory extends TileConnectable implements MenuProvider, ITileNetworkSync {
@@ -23,7 +24,11 @@ public class TileInventory extends TileConnectable implements MenuProvider, ITil
   private boolean autoFocus = true;
 
   public TileInventory(BlockPos pos, BlockState state) {
-    super(SsnRegistry.Tiles.INVENTORY.get(), pos, state);
+    this(SsnRegistry.Tiles.INVENTORY.get(), pos, state);
+  }
+
+  public TileInventory(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
+    super(blockEntityType, pos, state);
   }
 
   @Override

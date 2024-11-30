@@ -32,7 +32,7 @@ public class BlockExchange extends EntityBlockFlib {
   @Override
   public void appendHoverText(ItemStack stack, BlockGetter playerIn, List<Component> tooltip, TooltipFlag advanced) {
     super.appendHoverText(stack, playerIn, tooltip, advanced);
-    tooltip.add(Component.translatable("[WARNING: laggy on large networks] ").withStyle(ChatFormatting.DARK_GRAY));
+    tooltip.add(Component.translatable("[WARNING: only use on small Storage Networks. A large AE2 network interfaced with a large Storage Network will cause lag] ").withStyle(ChatFormatting.DARK_GRAY));
   }
 
   @Override

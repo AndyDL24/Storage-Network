@@ -30,7 +30,12 @@ public class SsnEvents {
   @SubscribeEvent
   public void onHit(PlayerInteractEvent.LeftClickBlock event) {
     ItemBuilder.onLeftClickBlock(event);
+    if (ConfigRegistry.enableFacades.get()) {
+      onHitFacadeHandler(event);
+    }
+  }
 
+  private void onHitFacadeHandler(PlayerInteractEvent.LeftClickBlock event) {
     Level level = event.getLevel();
     if (!level.isClientSide) {
       return; // dont save client data; server side only from here on
@@ -48,19 +53,18 @@ public class SsnEvents {
       else {
         Block block = Block.byItem(held.getItem());
         if (block == null || block == Blocks.AIR) {
-          StorageNetworkMod.log("no block");
           return;
         }
         if (!ConfigRegistry.isFacadeAllowed(held)) {
-          StorageNetworkMod.log("not allowed as a facade from config file");
+          StorageNetworkMod.log("not allowed as a facade from config file: " + held.getItem());
           return;
         }
-        BlockHitResult bhr = (BlockHitResult) player.pick(5, 1, false);
+        //pick the block, write to tags, and send to server
+        boolean pickFluids = false;
+        BlockHitResult bhr = (BlockHitResult) player.pick(player.getBlockReach(), 1, pickFluids);
         BlockPlaceContext context = new BlockPlaceContext(player, event.getHand(), held, bhr);
-
-        BlockState facadeState = null;
-        facadeState = block.getStateForPlacement(context);
-        CompoundTag tags = NbtUtils.writeBlockState(facadeState);
+        BlockState facadeState = block.getStateForPlacement(context);
+        CompoundTag tags = (facadeState == null) ? null : NbtUtils.writeBlockState(facadeState);
         PacketRegistry.INSTANCE.sendToServer(new CableFacadeMessage(event.getPos(), tags));
       }
     }
@@ -73,5 +77,4 @@ public class SsnEvents {
       PacketRegistry.INSTANCE.sendToServer(new KeybindCurioMessage());
     }
   }
-
 }

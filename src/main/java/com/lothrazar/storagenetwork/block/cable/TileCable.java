@@ -37,15 +37,17 @@ public class TileCable extends TileConnectable {
     else {
       setFacadeState(null);
     }
-
   }
 
   @Override
   public void saveAdditional(CompoundTag compound) {
-    super.saveAdditional(compound);
-    if (facadeState != null) {
-    compound.put(NBT_FACADE, facadeState);
+    if (facadeState == null) {
+      compound.remove(NBT_FACADE);
     }
+    else {
+      compound.put(NBT_FACADE, facadeState);
+    }
+    super.saveAdditional(compound);
   }
 
   public static TileCable getTileCable(BlockGetter world, BlockPos pos) {
@@ -67,5 +69,4 @@ public class TileCable extends TileConnectable {
   public void setFacadeState(CompoundTag facadeState) {
     this.facadeState = facadeState;
   }
-
 }

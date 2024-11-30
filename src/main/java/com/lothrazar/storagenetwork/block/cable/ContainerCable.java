@@ -1,5 +1,6 @@
 package com.lothrazar.storagenetwork.block.cable;
 
+import com.lothrazar.storagenetwork.util.SsnConsts;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 public abstract class ContainerCable extends AbstractContainerMenu {
 
-  protected static final int SQ = 18;
+  protected static final int SQ = SsnConsts.SQ;
   protected Player player;
   protected Level world;
 

@@ -8,16 +8,15 @@ import com.lothrazar.storagenetwork.api.IGuiPrivate;
 import com.lothrazar.storagenetwork.api.OpCompareType;
 import com.lothrazar.storagenetwork.block.cable.inputfilter.ScreenCableImportFilter;
 import com.lothrazar.storagenetwork.capability.handler.FilterItemStackHandler;
-import com.lothrazar.storagenetwork.gui.ButtonRequest;
-import com.lothrazar.storagenetwork.gui.ButtonRequest.TextureEnum;
-import com.lothrazar.storagenetwork.gui.ItemSlotNetwork;
-import com.lothrazar.storagenetwork.gui.TextboxInteger;
+import com.lothrazar.storagenetwork.gui.components.ButtonRequest;
+import com.lothrazar.storagenetwork.gui.components.TextboxInteger;
+import com.lothrazar.storagenetwork.gui.components.ButtonRequest.TextureEnum;
+import com.lothrazar.storagenetwork.gui.slot.ItemSlotNetwork;
 import com.lothrazar.storagenetwork.network.CableIOMessage;
 import com.lothrazar.storagenetwork.registry.ClientEventRegistry;
 import com.lothrazar.storagenetwork.registry.PacketRegistry;
 import com.lothrazar.storagenetwork.util.SsnConsts;
 import com.lothrazar.storagenetwork.util.UtilTileEntity;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -165,13 +164,10 @@ public class ScreenCableExportFilter extends AbstractContainerScreen<ContainerCa
     }
   }
 
-  public static final int SLOT_SIZE = SsnConsts.SLOT_SIZE;
+  public static final int SLOT_SIZE = SsnConsts.SQ;
 
   @Override
   protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-    //    minecraft.getTextureManager().bind(texture);
-    //    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-    //    RenderSystem.setShaderTexture(0, texture);
     int xCenter = (width - imageWidth) / 2;
     int yCenter = (height - imageHeight) / 2;
     ms.blit(texture, xCenter, yCenter, 0, 0, imageWidth, imageHeight);
@@ -196,13 +192,11 @@ public class ScreenCableExportFilter extends AbstractContainerScreen<ContainerCa
     }
     int x = leftPos + 6;
     y = topPos + 26;
-    int size = SsnConsts.SLOT_SIZE;
+    int size = SsnConsts.SQ;
     operationItemSlot = new ItemSlotNetwork(this, containerCableLink.cap.operationStack, x, y, size, leftPos, topPos, false);
     if (this.isOperationMode()) {
       operationItemSlot.drawSlot(ms, font, mouseX, mouseY);
-      //      RenderSystem.setShader(GameRenderer::getPositionTexShader);
-      RenderSystem.setShaderTexture(0, ClientEventRegistry.SLOT);
-      ms.blit(texture, x - 1, y - 1, 0, 0, size, size, size, size);
+      ms.blit(ClientEventRegistry.SLOT, x - 1, y - 1, 0, 0, size, size, size, size);
     }
   }
 

@@ -44,7 +44,7 @@ public class EmiTransferHandler<T extends ContainerNetwork> implements StandardR
   public EmiPlayerInventory getInventory(AbstractContainerScreen<T> screen) {
     List<EmiStack> stacks = new ArrayList<>();
     if (screen instanceof IGuiNetwork) {
-      NetworkWidget main = ((IGuiNetwork) screen).getNetworkWidget();
+      NetworkWidget main = ((IGuiNetwork) screen).getNetwork();
       if (main != null) {
         List<ItemStack> networkStacks = main.getStacks();
         networkStacks.stream().map(EmiStack::of).forEach(stacks::add);

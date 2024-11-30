@@ -1,4 +1,4 @@
-package com.lothrazar.storagenetwork.gui;
+package com.lothrazar.storagenetwork.gui.components;
 
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -14,7 +14,7 @@ public class ButtonRequest extends Button {
 
   public static enum TextureEnum {
 
-    ALLOWLIST, IGNORELIST, SORT_AMT, SORT_MOD, SORT_NAME, SORT_UP, SORT_DOWN, JEI_RED, JEI_GREEN, IMPORT, PLUS, MINUS, REDSTONETRUE, REDSTONEFALSE, RED, GREY;
+    ALLOWLIST, IGNORELIST, SORT_AMT, SORT_MOD, SORT_NAME, SORT_UP, SORT_DOWN, JEI_RED, JEI_GREEN, IMPORT, PLUS, MINUS, REDSTONETRUE, REDSTONEFALSE, RED, GREY, CRAFTCLEAR;
 
     public int getX() {
       switch (this) {
@@ -50,6 +50,8 @@ public class ButtonRequest extends Button {
           return 196;
         case MINUS:
           return 177;
+        case CRAFTCLEAR:
+          return 209;
         default:
           return 0;
       }
@@ -82,6 +84,8 @@ public class ButtonRequest extends Button {
           return 13;
         case MINUS:
           return 13;
+        case CRAFTCLEAR:
+          return 53;
         default:
           return 0;
       }

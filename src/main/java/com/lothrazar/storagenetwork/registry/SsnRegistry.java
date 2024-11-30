@@ -23,6 +23,9 @@ import com.lothrazar.storagenetwork.block.collection.ContainerCollectionFilter;
 import com.lothrazar.storagenetwork.block.collection.TileCollection;
 import com.lothrazar.storagenetwork.block.exchange.BlockExchange;
 import com.lothrazar.storagenetwork.block.exchange.TileExchange;
+import com.lothrazar.storagenetwork.block.expand.BlockInventoryExpanded;
+import com.lothrazar.storagenetwork.block.expand.ContainerNetworkInventoryExpanded;
+import com.lothrazar.storagenetwork.block.expand.TileInventoryExpanded;
 import com.lothrazar.storagenetwork.block.inventory.BlockInventory;
 import com.lothrazar.storagenetwork.block.inventory.ContainerNetworkInventory;
 import com.lothrazar.storagenetwork.block.inventory.TileInventory;
@@ -36,6 +39,7 @@ import com.lothrazar.storagenetwork.item.ItemCollector;
 import com.lothrazar.storagenetwork.item.ItemPicker;
 import com.lothrazar.storagenetwork.item.ItemUpgrade;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkCraftingRemote;
+import com.lothrazar.storagenetwork.item.remote.ContainerNetworkExpandedRemote;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkRemote;
 import com.lothrazar.storagenetwork.item.remote.ItemStorageCraftingRemote;
 import net.minecraft.world.inventory.MenuType;
@@ -69,6 +73,7 @@ public class SsnRegistry {
     public static final RegistryObject<Block> EXPORT_KABEL = BLOCKS.register("export_kabel", () -> new BlockCableExport());
     public static final RegistryObject<Block> PROCESS_KABEL = BLOCKS.register("process_kabel", () -> new BlockCableProcess());
     public static final RegistryObject<Block> INVENTORY = BLOCKS.register("inventory", () -> new BlockInventory());
+    public static final RegistryObject<Block> REQUEST_EXPANDED = BLOCKS.register("request_expanded", () -> new BlockInventoryExpanded());
     public static final RegistryObject<Block> EXCHANGE = BLOCKS.register("exchange", () -> new BlockExchange());
     public static final RegistryObject<Block> COLLECTOR = BLOCKS.register("collector", () -> new BlockCollection());
   }
@@ -78,14 +83,15 @@ public class SsnRegistry {
 
     public static final RegistryObject<Item> REQUEST = ITEMS.register("request", () -> new BlockItem(Blocks.REQUEST.get(), new Item.Properties()));
     public static final RegistryObject<Item> KABEL = ITEMS.register("kabel", () -> new BlockItem(Blocks.KABEL.get(), new Item.Properties()));
-    public static final RegistryObject<Item> INV = ITEMS.register("inventory", () -> new BlockItem(Blocks.INVENTORY.get(), new Item.Properties()));
+    public static final RegistryObject<Item> INVENTORY = ITEMS.register("inventory", () -> new BlockItem(Blocks.INVENTORY.get(), new Item.Properties()));
+    public static final RegistryObject<Item> REQUEST_EXPANDED = ITEMS.register("request_expanded", () -> new BlockItem(Blocks.REQUEST_EXPANDED.get(), new Item.Properties()));
     public static final RegistryObject<Item> MAS = ITEMS.register("master", () -> new BlockItem(Blocks.MASTER.get(), new Item.Properties()));
     public static final RegistryObject<Item> SK = ITEMS.register("storage_kabel", () -> new BlockItem(Blocks.STORAGE_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> IK = ITEMS.register("import_kabel", () -> new BlockItem(Blocks.IMPORT_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> IFK = ITEMS.register("import_filter_kabel", () -> new BlockItem(Blocks.IMPORT_FILTER_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> FK = ITEMS.register("filter_kabel", () -> new BlockItem(Blocks.FILTER_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> EK = ITEMS.register("export_kabel", () -> new BlockItem(Blocks.EXPORT_KABEL.get(), new Item.Properties()));
-    //  public static final RegistryObject<Item> PK = ITEMS.register("process_kabel", () -> new BlockItem(Blocks.PROCESS_KABEL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> PK = ITEMS.register("process_kabel", () -> new BlockItem(Blocks.PROCESS_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> EXCHANGE = ITEMS.register("exchange", () -> new BlockItem(Blocks.EXCHANGE.get(), new Item.Properties()));
     public static final RegistryObject<Item> COL = ITEMS.register("collector", () -> new BlockItem(Blocks.COLLECTOR.get(), new Item.Properties()));
     public static final RegistryObject<ItemUpgrade> STACK_UPGRADE = ITEMS.register("stack_upgrade", () -> new ItemUpgrade(new Item.Properties()));
@@ -99,6 +105,7 @@ public class SsnRegistry {
     public static final RegistryObject<Item> PICKER_REMOTE = ITEMS.register("picker_remote", () -> new ItemPicker(new Item.Properties()));
     public static final RegistryObject<ItemCollector> COLLECTOR_REMOTE = ITEMS.register("collector_remote", () -> new ItemCollector(new Item.Properties()));
     public static final RegistryObject<Item> BUILDER_REMOTE = ITEMS.register("builder_remote", () -> new ItemBuilder(new Item.Properties()));
+    public static final RegistryObject<Item> EXPANDED_REMOTE = ITEMS.register("expanded_remote", () -> new ItemStorageCraftingRemote(new Item.Properties()));
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -106,6 +113,7 @@ public class SsnRegistry {
 
     public static final RegistryObject<BlockEntityType<TileMain>> MASTER = TILES.register("master", () -> BlockEntityType.Builder.of(TileMain::new, Blocks.MASTER.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileInventory>> INVENTORY = TILES.register("inventory", () -> BlockEntityType.Builder.of(TileInventory::new, Blocks.INVENTORY.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TileInventoryExpanded>> REQUEST_EXPANDED = TILES.register("request_expanded", () -> BlockEntityType.Builder.of(TileInventoryExpanded::new, Blocks.REQUEST_EXPANDED.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileRequest>> REQUEST = TILES.register("request", () -> BlockEntityType.Builder.of(TileRequest::new, Blocks.REQUEST.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCable>> KABEL = TILES.register("kabel", () -> BlockEntityType.Builder.of(TileCable::new, Blocks.KABEL.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCableLink>> STORAGE_KABEL = TILES.register("storage_kabel", () -> BlockEntityType.Builder.of(TileCableLink::new, Blocks.STORAGE_KABEL.get()).build(null));
@@ -116,6 +124,7 @@ public class SsnRegistry {
     public static final RegistryObject<BlockEntityType<TileExchange>> EXCHANGE = TILES.register("exchange", () -> BlockEntityType.Builder.of(TileExchange::new, Blocks.EXCHANGE.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCollection>> COLLECTOR = TILES.register("collector", () -> BlockEntityType.Builder.of(TileCollection::new, Blocks.COLLECTOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCableProcess>> PROCESS_KABEL = TILES.register("process_kabel", () -> BlockEntityType.Builder.of(TileCableProcess::new, Blocks.PROCESS_KABEL.get()).build(null));
+
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -139,11 +148,17 @@ public class SsnRegistry {
     public static final RegistryObject<MenuType<ContainerNetworkInventory>> INVENTORY = CONTAINERS.register("inventory", () -> IForgeMenuType.create((windowId, inv, data) -> {
       return new ContainerNetworkInventory(windowId, inv.player.level(), data.readBlockPos(), inv, inv.player);
     }));
+    public static final RegistryObject<MenuType<ContainerNetworkInventoryExpanded>> REQUEST_EXPANDED = CONTAINERS.register("request_expanded", () -> IForgeMenuType.create((windowId, inv, data) -> {
+      return new ContainerNetworkInventoryExpanded(windowId, inv.player.level(), data.readBlockPos(), inv, inv.player);
+    }));
     public static final RegistryObject<MenuType<ContainerNetworkRemote>> INVENTORY_REMOTE = CONTAINERS.register("inventory_remote", () -> IForgeMenuType.create((windowId, inv, data) -> {
       return new ContainerNetworkRemote(windowId, inv.player.getInventory());
     }));
     public static final RegistryObject<MenuType<ContainerNetworkCraftingRemote>> CRAFTING_REMOTE = CONTAINERS.register("crafting_remote", () -> IForgeMenuType.create((windowId, inv, data) -> {
       return new ContainerNetworkCraftingRemote(windowId, inv.player.getInventory());
+    }));
+    public static final RegistryObject<MenuType<ContainerNetworkExpandedRemote>> EXPANDED_REMOTE = CONTAINERS.register("expanded_remote", () -> IForgeMenuType.create((windowId, inv, data) -> {
+      return new ContainerNetworkExpandedRemote(windowId, inv.player.getInventory());
     }));
   }
 }
