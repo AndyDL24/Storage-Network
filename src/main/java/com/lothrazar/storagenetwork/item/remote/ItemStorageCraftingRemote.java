@@ -177,7 +177,11 @@ public class ItemStorageCraftingRemote extends ItemFlib implements MenuProvider 
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
     boolean crafting = (this == SsnRegistry.Items.CRAFTING_REMOTE.get());
-    if (crafting) {
+    boolean expanded = (this == SsnRegistry.Items.EXPANDED_REMOTE.get());
+    if (expanded) {
+      return new ContainerNetworkExpandedRemote(id, inv);
+    }
+    else if (crafting) {
       return new ContainerNetworkCraftingRemote(id, inv);
     }
     else {

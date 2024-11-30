@@ -108,9 +108,9 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
         rectX = 63;
         rectY = 110 + 200;
       }
-      System.out.println(mouseX + "," + mouseY);
+      // TODO: revise above .out.println(mouseX + "," + mouseY);
       if (isHovering(rectX, rectY, 7, 7, mouseX, mouseY)) {
-        System.out.println("clear!");
+
         PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
         PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
         return true;
@@ -119,6 +119,7 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
     return true;
   }
 
+  @Deprecated
   protected void blitSegment(GuiGraphics ms, TileableTexture tt, int xpos, int ypos) {
     ms.blit(tt.texture(), xpos, ypos, 0, 0, tt.width(), tt.height());
   }

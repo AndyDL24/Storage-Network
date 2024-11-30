@@ -55,7 +55,7 @@ public class NetworkWidget {
   private int lines = 4;
   private int columns = 9;
   public int scrollHeight = 152;
-  public int scrollWidth = 176;
+  public int scrollWidth = 176;//defaults to WIDTH
   //
   public int xNetwork = 8;
   public int yNetwork = 10;
@@ -84,7 +84,7 @@ public class NetworkWidget {
       case EXPANDED:
         buffer = -10;
         this.xNetwork = 10; // head.height();
-        this.scrollWidth = 256 + 12 * 18; //imageWidth
+        this.scrollWidth = W + 12 * 18; //imageWidth
       break;
     }
     scrollHeight = (SsnConsts.SQ + 1) * this.getLines() + buffer;
@@ -464,5 +464,38 @@ public class NetworkWidget {
     if (jeiBtn != null && ModList.get().isLoaded("jei")) {
       jeiBtn.setTextureId(gui.isJeiSearchSynced() ? TextureEnum.JEI_GREEN : TextureEnum.JEI_RED);
     }
+  }
+
+  protected static final int W = 256;
+  //i know they could all be in the same png file and i pull out sprites from it, but split images is easier to work with
+  public static final TileableTexture head = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head.png"), W, 10);
+  public static final TileableTexture head_right = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_head_right.png"), W, 10);
+  public static final TileableTexture row = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row.png"), W, SsnConsts.SQ);
+  public static final TileableTexture row_right = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_row_right.png"), W, SsnConsts.SQ);
+  public static final TileableTexture crafting = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting.png"), W, 66);
+  public static final TileableTexture crafting_right = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_crafting_right.png"), W, 66);
+  public static final TileableTexture player = new TileableTexture(new ResourceLocation(StorageNetworkMod.MODID, "textures/gui/expandable_player.png"), 176, 84);
+
+  protected void blitSegment(GuiGraphics ms, TileableTexture tt, int xpos, int ypos) {
+    ms.blit(tt.texture(), xpos, ypos, 0, 0, tt.width(), tt.height());
+  }
+
+  public void renderBgExpanded(GuiGraphics ms, float partialTicks, int mouseX, int mouseY, int xCenter, int yCenter) {
+    //render the top
+    int xpos = xCenter;
+    int ypos = yCenter;
+    blitSegment(ms, head, xpos, ypos);
+    blitSegment(ms, head_right, xpos + W, ypos);
+    ypos += head.height();
+    //render the rows
+    for (int line = 0; line < this.getLines(); line++) {
+      blitSegment(ms, row, xpos, ypos);
+      blitSegment(ms, row_right, xpos + W, ypos);
+      ypos += row.height();
+    }
+    blitSegment(ms, crafting, xpos, ypos);
+    blitSegment(ms, crafting_right, xpos + W, ypos);
+    ypos += crafting.height() - 4;
+    blitSegment(ms, player, xpos, ypos);
   }
 }

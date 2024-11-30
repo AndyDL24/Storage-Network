@@ -10,6 +10,7 @@ import com.lothrazar.storagenetwork.block.expand.ScreenNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.block.inventory.ScreenNetworkInventory;
 import com.lothrazar.storagenetwork.block.request.ScreenNetworkTable;
 import com.lothrazar.storagenetwork.item.remote.ScreenNetworkCraftingRemote;
+import com.lothrazar.storagenetwork.item.remote.ScreenNetworkExpandedRemote;
 import com.lothrazar.storagenetwork.item.remote.ScreenNetworkRemote;
 import com.lothrazar.storagenetwork.registry.ClientEventRegistry;
 import com.lothrazar.storagenetwork.registry.ConfigRegistry;
@@ -63,8 +64,9 @@ public class StorageNetworkMod {
     MenuScreens.register(SsnRegistry.Menus.INVENTORY_REMOTE.get(), ScreenNetworkRemote::new);
     MenuScreens.register(SsnRegistry.Menus.CRAFTING_REMOTE.get(), ScreenNetworkCraftingRemote::new);
     MenuScreens.register(SsnRegistry.Menus.INVENTORY.get(), ScreenNetworkInventory::new);
-    MenuScreens.register(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), ScreenNetworkInventoryExpanded::new);
     MenuScreens.register(SsnRegistry.Menus.COLLECTOR.get(), ScreenCollectionFilter::new);
+    MenuScreens.register(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), ScreenNetworkInventoryExpanded::new);
+    MenuScreens.register(SsnRegistry.Menus.EXPANDED_REMOTE.get(), ScreenNetworkExpandedRemote::new);
   }
 
   private void registerMapping(final RegisterKeyMappingsEvent event) {

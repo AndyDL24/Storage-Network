@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
-public class ScreenNetworkRemote extends AbstractNetworkScreen<ContainerNetworkRemote> {// extends AbstractContainerScreen<ContainerNetworkRemote> implements IGuiNetwork {
+public class ScreenNetworkRemote extends AbstractNetworkScreen<ContainerNetworkRemote> {
 
   private static final int HEIGHT = 256;
   private static final int WIDTH = 176;

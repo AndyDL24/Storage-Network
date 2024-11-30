@@ -37,6 +37,7 @@ import com.lothrazar.storagenetwork.item.ItemCollector;
 import com.lothrazar.storagenetwork.item.ItemPicker;
 import com.lothrazar.storagenetwork.item.ItemUpgrade;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkCraftingRemote;
+import com.lothrazar.storagenetwork.item.remote.ContainerNetworkExpandedRemote;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkRemote;
 import com.lothrazar.storagenetwork.item.remote.ItemStorageCraftingRemote;
 import net.minecraft.world.inventory.MenuType;
@@ -102,6 +103,7 @@ public class SsnRegistry {
     public static final RegistryObject<Item> PICKER_REMOTE = ITEMS.register("picker_remote", () -> new ItemPicker(new Item.Properties()));
     public static final RegistryObject<ItemCollector> COLLECTOR_REMOTE = ITEMS.register("collector_remote", () -> new ItemCollector(new Item.Properties()));
     public static final RegistryObject<Item> BUILDER_REMOTE = ITEMS.register("builder_remote", () -> new ItemBuilder(new Item.Properties()));
+    public static final RegistryObject<Item> EXPANDED_REMOTE = ITEMS.register("expanded_remote", () -> new ItemStorageCraftingRemote(new Item.Properties()));
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -150,6 +152,9 @@ public class SsnRegistry {
     }));
     public static final RegistryObject<MenuType<ContainerNetworkCraftingRemote>> CRAFTING_REMOTE = CONTAINERS.register("crafting_remote", () -> IForgeMenuType.create((windowId, inv, data) -> {
       return new ContainerNetworkCraftingRemote(windowId, inv.player.getInventory());
+    }));
+    public static final RegistryObject<MenuType<ContainerNetworkExpandedRemote>> EXPANDED_REMOTE = CONTAINERS.register("expanded_remote", () -> IForgeMenuType.create((windowId, inv, data) -> {
+      return new ContainerNetworkExpandedRemote(windowId, inv.player.getInventory());
     }));
   }
 }

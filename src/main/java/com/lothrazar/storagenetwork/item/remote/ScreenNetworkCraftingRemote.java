@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
-public class ScreenNetworkCraftingRemote extends AbstractNetworkScreen<ContainerNetworkCraftingRemote> { // extends AbstractContainerScreen<ContainerNetworkCraftingRemote> implements IGuiNetwork {
+public class ScreenNetworkCraftingRemote extends AbstractNetworkScreen<ContainerNetworkCraftingRemote> {
 
   private static final int HEIGHT = 256;
   private static final int WIDTH = 176;
@@ -24,10 +24,10 @@ public class ScreenNetworkCraftingRemote extends AbstractNetworkScreen<Container
   public ScreenNetworkCraftingRemote(ContainerNetworkCraftingRemote screenContainer, Inventory inv, Component titleIn) {
     super(screenContainer, inv, titleIn);
     //since the rightclick action forces only MAIN_HAND openings, is ok
-    this.remote = screenContainer.getRemote();// inv.player.getItemInHand(InteractionHand.MAIN_HAND);
+    remote = screenContainer.getRemote();// inv.player.getItemInHand(InteractionHand.MAIN_HAND);
     network = new NetworkWidget(this, NetworkScreenSize.NORMAL);
-    this.imageWidth = WIDTH;
-    this.imageHeight = HEIGHT;
+    imageWidth = WIDTH;
+    imageHeight = HEIGHT;
   }
 
   @Override
@@ -47,17 +47,12 @@ public class ScreenNetworkCraftingRemote extends AbstractNetworkScreen<Container
 
   @Override
   protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-    int xCenter = (this.width - this.imageWidth) / 2;
-    int yCenter = (this.height - this.imageHeight) / 2;
+    final int xCenter = (width - imageWidth) / 2;
+    final int yCenter = (height - imageHeight) / 2;
     ms.blit(textureCraft, xCenter, yCenter, 0, 0, this.imageWidth, this.imageHeight);
+    //update network
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
-  }
-
-  @Override
-  public void resize(Minecraft mc, int w, int h) {
-    super.resize(mc, w, h);
-    network.resize(mc, w, h);
   }
 
   @Override

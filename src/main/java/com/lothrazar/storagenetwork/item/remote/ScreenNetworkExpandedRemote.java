@@ -1,30 +1,28 @@
-package com.lothrazar.storagenetwork.block.expand;
+package com.lothrazar.storagenetwork.item.remote;
 
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import com.lothrazar.storagenetwork.gui.TileableTexture;
-import com.lothrazar.storagenetwork.util.SsnConsts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
-public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<ContainerNetworkInventoryExpanded> {
+public class ScreenNetworkExpandedRemote extends AbstractNetworkScreen<ContainerNetworkExpandedRemote> {
 
-  protected final NetworkWidget network;
-  private TileInventoryExpanded tile;
+  private final NetworkWidget network;
+  private final ItemStack remote;
 
-  public ScreenNetworkInventoryExpanded(ContainerNetworkInventoryExpanded container, Inventory inv, Component name) {
-    super(container, inv, name);
-    tile = container.tile;
+  public ScreenNetworkExpandedRemote(ContainerNetworkExpandedRemote screenContainer, Inventory inv, Component titleIn) {
+    super(screenContainer, inv, titleIn);
+    //since the rightclick action forces only MAIN_HAND openings, is ok
+    this.remote = screenContainer.getRemote();
     network = new NetworkWidget(this, NetworkScreenSize.EXPANDED);
-    //TODO: refactor this calculation
     imageHeight = NetworkWidget.player.height() + NetworkWidget.crafting.height()
         + NetworkWidget.row.height() * network.getSize().lines()
         + NetworkWidget.head.height();
@@ -47,60 +45,54 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
   }
 
   @Override
-  public void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-    //get center points from screen size
-    final int xCenter = (width - imageWidth) / 2;
-    final int yCenter = (height - imageHeight) / 2;
+  protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
+    final int xCenter = (this.width - this.imageWidth) / 2;
+    final int yCenter = (this.height - this.imageHeight) / 2;
     network.renderBgExpanded(ms, partialTicks, mouseX, mouseY, xCenter, yCenter);
+    network.applySearchTextToSlots();
     //update network
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-  // all the IGUINETWORK implementations
 
   @Override
   public boolean getDownwards() {
-    return tile.isDownwards();
+    return ItemStorageCraftingRemote.getDownwards(remote);
   }
 
   @Override
-  public void setDownwards(boolean d) {
-    tile.setDownwards(d);
+  public void setDownwards(boolean val) {
+    ItemStorageCraftingRemote.setDownwards(remote, val);
   }
 
   @Override
   public EnumSortType getSort() {
-    return tile.getSort();
+    return ItemStorageCraftingRemote.getSort(remote);
   }
 
   @Override
-  public void setSort(EnumSortType s) {
-    tile.setSort(s);
-  }
-
-  @Override
-  public BlockPos getPos() {
-    return tile.getBlockPos();
+  public void setSort(EnumSortType val) {
+    ItemStorageCraftingRemote.setSort(remote, val);
   }
 
   @Override
   public boolean isJeiSearchSynced() {
-    return tile.isJeiSearchSynced();
+    return ItemStorageCraftingRemote.isJeiSearchSynced(remote);
   }
 
   @Override
   public void setJeiSearchSynced(boolean val) {
-    tile.setJeiSearchSynced(val);
+    ItemStorageCraftingRemote.setJeiSearchSynced(remote, val);
   }
 
   @Override
   public boolean getAutoFocus() {
-    return tile.getAutoFocus();
+    return ItemStorageCraftingRemote.getAutoFocus(remote);
   }
 
   @Override
   public void setAutoFocus(boolean b) {
-    tile.setAutoFocus(b);
+    ItemStorageCraftingRemote.setAutoFocus(remote, b);
   }
 
   @Override

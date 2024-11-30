@@ -1,5 +1,6 @@
 package com.lothrazar.storagenetwork.gui;
 public enum NetworkScreenSize {
+
   //normal has the crafting table
   //large is the original inventory and remote with no crafting table
   NORMAL, LARGE, EXPANDED;
@@ -9,9 +10,9 @@ public enum NetworkScreenSize {
       case NORMAL:
         return 4;
       case LARGE:
-        return 4 * 2;
+        return 8;
       case EXPANDED:
-        return 4 * 5 + 1;
+        return 21;
     }
     return 0;
   }
