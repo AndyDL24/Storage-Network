@@ -5,7 +5,6 @@ import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -37,6 +36,8 @@ public class ScreenNetworkCraftingRemote extends AbstractNetworkScreen<Container
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
+    if (this.network.getSize().isCrafting())
+      addRenderableWidget(network.clearGridBtn);
     if (this.getAutoFocus()) {
       network.searchBar.setFocused(true);
     }

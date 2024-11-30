@@ -3,13 +3,9 @@ package com.lothrazar.storagenetwork.block;
 import java.util.List;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.IGuiNetwork;
-import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.TileableTexture;
 import com.lothrazar.storagenetwork.gui.components.TextboxInteger;
 import com.lothrazar.storagenetwork.jei.JeiHooks;
-import com.lothrazar.storagenetwork.network.ClearRecipeMessage;
-import com.lothrazar.storagenetwork.network.RequestMessage;
-import com.lothrazar.storagenetwork.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -99,23 +95,21 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
   public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     super.mouseClicked(mouseX, mouseY, mouseButton);
     getNetwork().mouseClicked(mouseX, mouseY, mouseButton);
-    var size = getNetwork().getSize();
-    if (size.isCrafting()) {
-      //TODO: this is part of crafting grid, to clear it out. should be its own button class
-      int rectX = 63;
-      int rectY = 110;
-      if (size == NetworkScreenSize.EXPANDED) {
-        rectX = 63;
-        rectY = 110 + 200;
-      }
-      // TODO: revise above .out.println(mouseX + "," + mouseY);
-      if (isHovering(rectX, rectY, 7, 7, mouseX, mouseY)) {
-
-        PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
-        PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
-        return true;
-      }
-    }
+    //    var size = getNetwork().getSize();
+    //    if (size.isCrafting()) {
+    //      //TODO: this is part of crafting grid, to clear it out. should be its own button class
+    //      int rectX = 63;
+    //      int rectY = 110;
+    //
+    //      // TODO: revise above  
+    //      if (isHovering(rectX, rectY, 7, 7, mouseX, mouseY)) {
+    //        System.out.println("clear cancelled do nothing,");
+    //
+    //        //        PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
+    //        //        PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
+    //        return true;
+    //      }
+    //    }
     return true;
   }
 

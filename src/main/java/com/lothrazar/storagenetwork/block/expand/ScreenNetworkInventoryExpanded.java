@@ -1,17 +1,12 @@
 package com.lothrazar.storagenetwork.block.expand;
 
-import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import com.lothrazar.storagenetwork.gui.TileableTexture;
-import com.lothrazar.storagenetwork.util.SsnConsts;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fml.ModList;
 
@@ -38,6 +33,8 @@ public class ScreenNetworkInventoryExpanded extends AbstractNetworkScreen<Contai
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
+    if (this.network.getSize().isCrafting())
+      addRenderableWidget(network.clearGridBtn);
     if (this.getAutoFocus()) {
       network.searchBar.setFocused(true);
     }

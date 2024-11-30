@@ -14,6 +14,7 @@ import com.lothrazar.storagenetwork.api.IGuiNetwork;
 import com.lothrazar.storagenetwork.gui.components.ButtonRequest;
 import com.lothrazar.storagenetwork.gui.components.ButtonRequest.TextureEnum;
 import com.lothrazar.storagenetwork.gui.slot.ItemSlotNetwork;
+import com.lothrazar.storagenetwork.network.ClearRecipeMessage;
 import com.lothrazar.storagenetwork.network.InsertMessage;
 import com.lothrazar.storagenetwork.network.RequestMessage;
 import com.lothrazar.storagenetwork.registry.PacketRegistry;
@@ -46,6 +47,7 @@ public class NetworkWidget {
   public ButtonRequest sortBtn;
   public ButtonRequest jeiBtn;
   public ButtonRequest focusBtn;
+  public ButtonRequest clearGridBtn;
   private List<ItemSlotNetwork> slots;
   private final IGuiNetwork gui;
   private long lastClick;
@@ -151,12 +153,23 @@ public class NetworkWidget {
         }, DEFAULT_NARRATION);
     focusBtn.setHeight(11);
     focusBtn.setWidth(6);
-  }
-
-  //called by outer component
-  @Deprecated
-  public void resize(Minecraft mc, int width, int height) {
-    //todo: how many rows? dynamically change size on screen resize from client
+    if (this.getSize() != NetworkScreenSize.LARGE) {
+      x = searchBar.getX() - 19;
+      y = searchBar.getY() + 13;
+      if (this.getSize() == NetworkScreenSize.EXPANDED) {
+        //omg this is a bit of a mess i should refactor this
+        x = searchBar.getX() - 99;
+        y = searchBar.getY() - 2;
+      }
+      clearGridBtn = new ButtonRequest(
+          x, y, "", (p) -> {
+            PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
+            PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
+          }, DEFAULT_NARRATION);
+      clearGridBtn.setHeight(7);
+      clearGridBtn.setWidth(7);
+      this.clearGridBtn.setTextureId(TextureEnum.CRAFTCLEAR);
+    }
   }
 
   public List<ItemStack> getStacks() {
@@ -331,6 +344,9 @@ public class NetworkWidget {
     else if (sortBtn != null && sortBtn.isMouseOver(mouseX, mouseY)) {
       tooltip = Component.translatable("gui.storagenetwork.req.tooltip_" + gui.getSort().name().toLowerCase());
     }
+    else if (clearGridBtn != null && clearGridBtn.isMouseOver(mouseX, mouseY)) {
+      tooltip = Component.translatable("gui.storagenetwork.req.tooltip_cleargrid");
+    }
     else if (focusBtn != null && focusBtn.isMouseOver(mouseX, mouseY)) {
       tooltip = Component.translatable("gui.storagenetwork.autofocus.tooltip." + gui.getAutoFocus());
     }
@@ -458,6 +474,8 @@ public class NetworkWidget {
       case NAME:
         sortBtn.setTextureId(TextureEnum.SORT_NAME);
       break;
+    }
+    if (this.clearGridBtn != null) {
     }
     focusBtn.setTextureId(gui.getAutoFocus() ? TextureEnum.RED : TextureEnum.GREY);
     directionBtn.setTextureId(gui.getDownwards() ? TextureEnum.SORT_DOWN : TextureEnum.SORT_UP);

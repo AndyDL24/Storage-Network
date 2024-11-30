@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileInventoryExpanded extends TileInventory {
 
   public TileInventoryExpanded(BlockPos pos, BlockState state) {
-    super(SsnRegistry.Tiles.INVENTORY_EXPANDED.get(), pos, state);
+    super(SsnRegistry.Tiles.REQUEST_EXPANDED.get(), pos, state);
   }
 
   @Override

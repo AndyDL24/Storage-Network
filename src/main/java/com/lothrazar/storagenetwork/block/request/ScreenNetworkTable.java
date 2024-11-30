@@ -5,7 +5,6 @@ import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -36,6 +35,8 @@ public class ScreenNetworkTable extends AbstractNetworkScreen<ContainerNetworkCr
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
+    if (this.network.getSize().isCrafting())
+      addRenderableWidget(network.clearGridBtn);
     if (this.getAutoFocus()) {
       network.searchBar.setFocused(true);
     }
@@ -54,11 +55,6 @@ public class ScreenNetworkTable extends AbstractNetworkScreen<ContainerNetworkCr
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
 
-  @Override
-  public void resize(Minecraft mc, int w, int h) {
-    super.resize(mc, w, h);
-    network.resize(mc, w, h);
-  }
   // all the IGUINETWORK implementations
 
   @Override
@@ -81,6 +77,7 @@ public class ScreenNetworkTable extends AbstractNetworkScreen<ContainerNetworkCr
     tile.setSort(s);
   }
 
+  @Override
   public BlockPos getPos() {
     return tile.getBlockPos();
   }

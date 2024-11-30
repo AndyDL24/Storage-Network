@@ -150,6 +150,8 @@
     "gui.storagenetwork.tooltip_clear": "Clear Search",
     "gui.storagenetwork.fil.tooltip_jei_on": "JEI search enabled",
     "gui.storagenetwork.fil.tooltip_jei_off": "JEI search disabled",
+    
+    "gui.storagenetwork.req.tooltip_cleargrid":"Clear Grid",
 
     "block.storagenetwork.kabel.tooltip": "Basic network cable ",
     "block.storagenetwork.storage_kabel.tooltip": "Used to connect inventory to the network",

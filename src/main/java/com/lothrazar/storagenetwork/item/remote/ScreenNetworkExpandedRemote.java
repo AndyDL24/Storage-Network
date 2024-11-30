@@ -1,14 +1,11 @@
 package com.lothrazar.storagenetwork.item.remote;
 
-import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.block.AbstractNetworkScreen;
 import com.lothrazar.storagenetwork.gui.NetworkScreenSize;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
@@ -36,6 +33,8 @@ public class ScreenNetworkExpandedRemote extends AbstractNetworkScreen<Container
     addRenderableWidget(network.directionBtn);
     addRenderableWidget(network.sortBtn);
     addRenderableWidget(network.focusBtn);
+    if (network.clearGridBtn != null)
+      addRenderableWidget(network.clearGridBtn);
     if (this.getAutoFocus()) {
       network.searchBar.setFocused(true);
     }
