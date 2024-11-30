@@ -475,8 +475,7 @@ public class NetworkWidget {
         sortBtn.setTextureId(TextureEnum.SORT_NAME);
       break;
     }
-    if (this.clearGridBtn != null) {
-    }
+    if (this.clearGridBtn != null) {}
     focusBtn.setTextureId(gui.getAutoFocus() ? TextureEnum.RED : TextureEnum.GREY);
     directionBtn.setTextureId(gui.getDownwards() ? TextureEnum.SORT_DOWN : TextureEnum.SORT_UP);
     if (jeiBtn != null && ModList.get().isLoaded("jei")) {

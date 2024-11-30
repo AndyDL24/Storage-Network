@@ -45,16 +45,27 @@
     "block.storagenetwork.request.guide": "Views the network inventory with full access to scroll, withdraw, and deposit items.  Custom crafting grid that pulls ingredients from the network.   See the $(l:crafting_remote)Remote version here$(/l)  ",
     "block.storagenetwork.request.tooltip": "Used to overview and request items from the network with a crafting grid",
     
+    "block.storagenetwork.request_expanded": "Expanded Request Table",
+    "block.storagenetwork.request_expanded.guide": "If this is unuseable for you set your GUI SCALE to a lower number.  May only work with large scale monitor resolutions.  Views the network inventory with full access to scroll, withdraw, and deposit items.  Custom crafting grid that pulls ingredients from the network.   See the $(l:crafting_remote)Remote version here$(/l)  ",
+    "block.storagenetwork.request_expanded.tooltip": "Only for use with extremely large gui scale resolutions",
+    
+       
+    "item.storagenetwork.expanded_remote": "Expanded Remote",
+    "item.storagenetwork.expanded_remote.tooltip": "Only for use with extremely large gui scale resolutions",
+    "item.storagenetwork.expanded_remote.guide": "If this is unuseable for you set your GUI SCALE to a lower number.  May only work with large scale monitor resolutions.  Full remote network access, not limited by range or dimension.  Similar to the $(l:inventory)Storage Inventory$(/l).  Open this also using the Key Binding",
+    
+    
+    
     "block.storagenetwork.inventory": "Storage Inventory",
     "block.storagenetwork.inventory.guide":  "Views the network inventory with full access to scroll, withdraw, and deposit items.  See the $(l:inventory_remote)Remote version here$(/l)  ",
     "block.storagenetwork.inventory.tooltip": "Inventory access without a crafting grid",
     
     "block.storagenetwork.exchange": "Network Exchange Interface",
-    "block.storagenetwork.exchange.guide": "This exposes the network and acts as a controller for other automation systems or storage solutions.  For example, a normal Hopper placed pointing at an Exchange Interface on a network, and it will insert the items into valid network slots as normal, similar to the  $(l:import_kabel)Import Cable$(/l).  A Hopper below will export arbitrary items.  Try this with other storage mods!  ",
+    "block.storagenetwork.exchange.guide": "This exposes the network as an inventory interface.  For example, the AE2 mod has a ME Storage Bus that will connect to this, so the entire simple storage network can be accessed through your AE2 system.  A Hopper below will export arbitrary items.  Try this with other storage mods!  ",
     "block.storagenetwork.exchange.tooltip": "Endpoint of the network for inventory connections",
 
     "block.storagenetwork.collector": "Network Collection Interface",
-    "block.storagenetwork.collector.guide":  "This exposes the network and acts as an insert-only controller for other automation systems or storage solutions.  For example, a normal Hopper placed pointing at an Exchange Interface on a network, and it will insert the items into valid network slots as normal, similar to the  $(l:import_kabel)Import Cable$(/l).  Does not allow any item extraction.  Try this with other storage mods!  ",
+    "block.storagenetwork.collector.guide":  "This exposes the network and acts as an insert-only controller for other automation systems or storage solutions.  For example, a normal Hopper will insert items similar to the  $(l:import_kabel)Import Cable$(/l).  Does not allow any item extraction.  Try this with other storage mods!  ",
     "block.storagenetwork.collector.tooltip": "Items inserted enter the network",
     
     "item.storagenetwork.speed_upgrade": "Speed Upgrade",

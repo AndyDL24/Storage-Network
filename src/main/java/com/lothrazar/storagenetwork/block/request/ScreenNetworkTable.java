@@ -54,7 +54,6 @@ public class ScreenNetworkTable extends AbstractNetworkScreen<ContainerNetworkCr
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-
   // all the IGUINETWORK implementations
 
   @Override

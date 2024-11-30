@@ -18,7 +18,7 @@ public class ContainerNetworkInventoryExpanded extends ContainerNetwork {
   private final ContainerLevelAccess access;
 
   public ContainerNetworkInventoryExpanded(int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {
-    this(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), windowId, world, pos, playerInv, player);
+    this(SsnRegistry.Menus.REQUEST_EXPANDED.get(), windowId, world, pos, playerInv, player);
   }
 
   public ContainerNetworkInventoryExpanded(MenuType<?> menuType, int windowId, Level world, BlockPos pos, Inventory playerInv, Player player) {

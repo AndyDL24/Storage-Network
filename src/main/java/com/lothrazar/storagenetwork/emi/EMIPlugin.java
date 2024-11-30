@@ -28,7 +28,7 @@ public class EMIPlugin implements EmiPlugin {
     registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(SsnRegistry.Blocks.REQUEST.get()));
     registry.addRecipeHandler(SsnRegistry.Menus.REQUEST.get(), new EmiTransferHandler<ContainerNetworkCraftingTable>());
     registry.addRecipeHandler(SsnRegistry.Menus.CRAFTING_REMOTE.get(), new EmiTransferHandler<ContainerNetworkCraftingRemote>());
-    registry.addRecipeHandler(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), new EmiTransferHandler<ContainerNetworkInventoryExpanded>());
+    registry.addRecipeHandler(SsnRegistry.Menus.REQUEST_EXPANDED.get(), new EmiTransferHandler<ContainerNetworkInventoryExpanded>());
     registry.addRecipeHandler(SsnRegistry.Menus.EXPANDED_REMOTE.get(), new EmiTransferHandler<ContainerNetworkExpandedRemote>());
     //        registry.addGenericDragDropHandler(new EmiGhostIngredientHandler());
     registry.addGenericStackProvider((scr, x, y) -> {

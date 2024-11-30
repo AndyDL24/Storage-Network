@@ -144,7 +144,7 @@ public class SsnRegistry {
     public static final RegistryObject<MenuType<ContainerNetworkInventory>> INVENTORY = CONTAINERS.register("inventory", () -> IForgeMenuType.create((windowId, inv, data) -> {
       return new ContainerNetworkInventory(windowId, inv.player.level(), data.readBlockPos(), inv, inv.player);
     }));
-    public static final RegistryObject<MenuType<ContainerNetworkInventoryExpanded>> INVENTORY_EXPANDED = CONTAINERS.register("inventory_expanded", () -> IForgeMenuType.create((windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<ContainerNetworkInventoryExpanded>> REQUEST_EXPANDED = CONTAINERS.register("request_expanded", () -> IForgeMenuType.create((windowId, inv, data) -> {
       return new ContainerNetworkInventoryExpanded(windowId, inv.player.level(), data.readBlockPos(), inv, inv.player);
     }));
     public static final RegistryObject<MenuType<ContainerNetworkRemote>> INVENTORY_REMOTE = CONTAINERS.register("inventory_remote", () -> IForgeMenuType.create((windowId, inv, data) -> {

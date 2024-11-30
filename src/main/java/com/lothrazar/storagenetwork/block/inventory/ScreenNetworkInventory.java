@@ -51,7 +51,6 @@ public class ScreenNetworkInventory extends AbstractNetworkScreen<ContainerNetwo
     network.applySearchTextToSlots();
     network.renderItemSlots(ms, mouseX, mouseY, font);
   }
-
   // all the IGUINETWORK implementations
 
   @Override

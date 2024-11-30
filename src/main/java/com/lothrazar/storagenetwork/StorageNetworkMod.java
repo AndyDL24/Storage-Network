@@ -65,7 +65,7 @@ public class StorageNetworkMod {
     MenuScreens.register(SsnRegistry.Menus.CRAFTING_REMOTE.get(), ScreenNetworkCraftingRemote::new);
     MenuScreens.register(SsnRegistry.Menus.INVENTORY.get(), ScreenNetworkInventory::new);
     MenuScreens.register(SsnRegistry.Menus.COLLECTOR.get(), ScreenCollectionFilter::new);
-    MenuScreens.register(SsnRegistry.Menus.INVENTORY_EXPANDED.get(), ScreenNetworkInventoryExpanded::new);
+    MenuScreens.register(SsnRegistry.Menus.REQUEST_EXPANDED.get(), ScreenNetworkInventoryExpanded::new);
     MenuScreens.register(SsnRegistry.Menus.EXPANDED_REMOTE.get(), ScreenNetworkExpandedRemote::new);
   }
 
