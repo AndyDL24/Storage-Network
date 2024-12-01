@@ -15,8 +15,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class CapabilityConnectableProcessing implements INBTSerializable<CompoundTag>, IConnectableItemProcessing {
 
-  public static final int DEFAULT_ITEMS_PER = 4;
-  public static final int IO_DEFAULT_SPEED = 30; // TODO CONFIG
 
   public static class Factory implements Callable<IConnectableItemProcessing> {
 
@@ -55,7 +53,6 @@ public class CapabilityConnectableProcessing implements INBTSerializable<Compoun
     if (inventoryFace != null) {
       result.putString("inventoryFace", inventoryFace.toString());
     }
-    //    result.putBoolean("needsRedstone", this.needsRedstone());
     return result;
   }
 
@@ -70,10 +67,13 @@ public class CapabilityConnectableProcessing implements INBTSerializable<Compoun
     if (filters != null) {
       this.filters.deserializeNBT(filters);
     }
+    CompoundTag filtersOut = nbt.getCompound("filtersOut");
+    if (filtersOut != null) {
+      this.filtersOut.deserializeNBT(filtersOut);
+    }
     if (nbt.contains("inventoryFace")) {
       inventoryFace = Direction.byName(nbt.getString("inventoryFace"));
     }
-    //    this.needsRedstone(nbt.getBoolean("needsRedstone"));
   }
 
   @Override
