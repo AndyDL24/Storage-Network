@@ -57,7 +57,7 @@ public class RequestMessage {
         StorageNetworkMod.log("Request message cancelled, null tile");
         return;
       }
-      int in = root.nw.getAmount(new ItemStackMatcher(message.stack, false, true));
+      int in = root.getNetwork().getAmount(new ItemStackMatcher(message.stack, false, true));
       ItemStack stack;
       boolean isLeftClick = message.mouseButton == UtilTileEntity.MOUSE_BTN_LEFT;
       boolean isRightClick = message.mouseButton == UtilTileEntity.MOUSE_BTN_RIGHT;
@@ -96,7 +96,7 @@ public class RequestMessage {
               player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
         }
       }
-      List<ItemStack> list = root.nw.getSortedStacks();
+      List<ItemStack> list = root.getNetwork().getSortedStacks();
       PacketRegistry.INSTANCE.sendTo(new StackRefreshClientMessage(list, new ArrayList<>()),
           player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
       player.containerMenu.broadcastChanges();

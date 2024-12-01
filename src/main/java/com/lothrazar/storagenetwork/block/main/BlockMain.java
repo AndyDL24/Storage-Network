@@ -35,7 +35,7 @@ public class BlockMain extends EntityBlockFlib {
     if (!worldIn.isClientSide) {
       BlockEntity tileAtPos = worldIn.getBlockEntity(pos);
       if (tileAtPos instanceof TileMain main) {
-        main.nw.setShouldRefresh();
+        main.getNetwork().setShouldRefresh();
       }
     }
   }
@@ -60,16 +60,16 @@ public class BlockMain extends EntityBlockFlib {
 
   private void displayConnections(Player playerIn, BlockEntity tileHere) {
     TileMain tileMain = (TileMain) tileHere;
-    int total = tileMain.nw.getConnectableSize();
+    int total = tileMain.getNetwork().getConnectableSize();
     if (total == 0) {
       return;
     }
     playerIn.sendSystemMessage(
         Component.translatable(ChatFormatting.LIGHT_PURPLE +
-            UtilTileEntity.lang("chat.main.emptyslots") + tileMain.nw.emptySlots()));
+            UtilTileEntity.lang("chat.main.emptyslots") + tileMain.getNetwork().emptySlots()));
     playerIn.sendSystemMessage(Component.translatable(ChatFormatting.DARK_AQUA +
         UtilTileEntity.lang("chat.main.connectables") + total));
-    List<Entry<String, Integer>> listDisplayStrings = tileMain.nw.getDisplayStrings();
+    List<Entry<String, Integer>> listDisplayStrings = tileMain.getNetwork().getDisplayStrings();
     for (Entry<String, Integer> e : listDisplayStrings) {
       playerIn.sendSystemMessage(Component.translatable(ChatFormatting.AQUA + "    " + e.getValue() + ": " + e.getKey()));
     }

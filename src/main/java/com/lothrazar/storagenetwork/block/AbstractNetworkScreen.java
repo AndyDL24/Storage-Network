@@ -95,21 +95,6 @@ public abstract class AbstractNetworkScreen<T extends AbstractContainerMenu> ext
   public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     super.mouseClicked(mouseX, mouseY, mouseButton);
     getNetwork().mouseClicked(mouseX, mouseY, mouseButton);
-    //    var size = getNetwork().getSize();
-    //    if (size.isCrafting()) {
-    //      //TODO: this is part of crafting grid, to clear it out. should be its own button class
-    //      int rectX = 63;
-    //      int rectY = 110;
-    //
-    //      // TODO: revise above  
-    //      if (isHovering(rectX, rectY, 7, 7, mouseX, mouseY)) {
-    //        System.out.println("clear cancelled do nothing,");
-    //
-    //        //        PacketRegistry.INSTANCE.sendToServer(new ClearRecipeMessage());
-    //        //        PacketRegistry.INSTANCE.sendToServer(new RequestMessage(0, ItemStack.EMPTY, false, false));
-    //        return true;
-    //      }
-    //    }
     return true;
   }
 

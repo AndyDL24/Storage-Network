@@ -91,7 +91,7 @@ public class SsnRegistry {
     public static final RegistryObject<Item> IFK = ITEMS.register("import_filter_kabel", () -> new BlockItem(Blocks.IMPORT_FILTER_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> FK = ITEMS.register("filter_kabel", () -> new BlockItem(Blocks.FILTER_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> EK = ITEMS.register("export_kabel", () -> new BlockItem(Blocks.EXPORT_KABEL.get(), new Item.Properties()));
-    public static final RegistryObject<Item> PK = ITEMS.register("process_kabel", () -> new BlockItem(Blocks.PROCESS_KABEL.get(), new Item.Properties()));
+    // public static final RegistryObject<Item> PK = ITEMS.register("process_kabel", () -> new BlockItem(Blocks.PROCESS_KABEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> EXCHANGE = ITEMS.register("exchange", () -> new BlockItem(Blocks.EXCHANGE.get(), new Item.Properties()));
     public static final RegistryObject<Item> COL = ITEMS.register("collector", () -> new BlockItem(Blocks.COLLECTOR.get(), new Item.Properties()));
     public static final RegistryObject<ItemUpgrade> STACK_UPGRADE = ITEMS.register("stack_upgrade", () -> new ItemUpgrade(new Item.Properties()));
@@ -124,7 +124,6 @@ public class SsnRegistry {
     public static final RegistryObject<BlockEntityType<TileExchange>> EXCHANGE = TILES.register("exchange", () -> BlockEntityType.Builder.of(TileExchange::new, Blocks.EXCHANGE.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCollection>> COLLECTOR = TILES.register("collector", () -> BlockEntityType.Builder.of(TileCollection::new, Blocks.COLLECTOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<TileCableProcess>> PROCESS_KABEL = TILES.register("process_kabel", () -> BlockEntityType.Builder.of(TileCableProcess::new, Blocks.PROCESS_KABEL.get()).build(null));
-
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

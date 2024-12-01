@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import com.lothrazar.storagenetwork.block.main.TileMain;
 import com.lothrazar.storagenetwork.capability.handler.FilterItemStackHandler;
+import com.lothrazar.storagenetwork.util.RequestBatch;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -44,23 +45,6 @@ public interface IConnectableItemAutoIO {
    * @return The remainder of the stack if not all of it fit into your storage
    */
   ItemStack insertStack(ItemStack stack, boolean simulate);
-
-  /**
-   * This is called whenever its your storages turn to import another item. Use the first used slot for this if you have a slot based inventory. If its not a simulation actually remove the stack from
-   * your storage!
-   * <p>
-   * Apply your own transfer rate here!
-   * <p>
-   * If your ioDirection is set to IN, this should never get called, unless another malicious mod is doing it.
-   *
-   * @param size
-   *          The size of the stack that should be extracted
-   * @param simulate
-   *          Whether or not this is just a simulation
-   * @return The stack that has been requested, if you have it
-   */
-  @Deprecated
-  ItemStack extractNextStack(int size, boolean simulate);
 
   default IItemHandler getItemHandler() {
     return null;
@@ -110,7 +94,11 @@ public interface IConnectableItemAutoIO {
    *          The network main. Use this to e.g. query amount of items.
    * @return Whether or not this IConnectableLink should be processed this tick.
    */
-  boolean runNow(DimPos connectablePos, TileMain main);
+  boolean canRunNow(DimPos connectablePos, TileMain main);
+
+  RequestBatch runExport(TileMain main);
+
+  void runImport(TileMain main);
 
   /**
    * If this block is used with an ioDirection of OUT and has its getSupportedTransferDirection set to OUT, then this list will be consolidated by the main and available items in the network matching

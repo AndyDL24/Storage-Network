@@ -310,6 +310,9 @@ public class NetworkModule {
   }
 
   public void executeRequestBatch(RequestBatch batch) {
+    if (batch == null) {
+      return;
+    }
     Batch<StackProvider> availableItems = new Batch<StackProvider>();
     for (IConnectableLink storage : getSortedConnectableStorage()) {
       storage.addToStackProviderBatch(availableItems);

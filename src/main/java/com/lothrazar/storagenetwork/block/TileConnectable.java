@@ -84,7 +84,7 @@ public abstract class TileConnectable extends BlockEntity {
       try {
         TileMain maybe = UtilTileEntity.getTileMainForConnectable(connectable);
         if (maybe != null) {
-          maybe.nw.setShouldRefresh();
+          maybe.getNetwork().setShouldRefresh();
         }
       }
       catch (Exception e) {

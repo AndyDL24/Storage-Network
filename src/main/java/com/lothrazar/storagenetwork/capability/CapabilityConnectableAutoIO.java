@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.DimPos;
 import com.lothrazar.storagenetwork.api.EnumStorageDirection;
 import com.lothrazar.storagenetwork.api.IConnectable;
@@ -16,6 +17,9 @@ import com.lothrazar.storagenetwork.capability.handler.ItemStackMatcher;
 import com.lothrazar.storagenetwork.capability.handler.UpgradesItemStackHandler;
 import com.lothrazar.storagenetwork.registry.SsnRegistry;
 import com.lothrazar.storagenetwork.registry.StorageNetworkCapabilities;
+import com.lothrazar.storagenetwork.util.Request;
+import com.lothrazar.storagenetwork.util.RequestBatch;
+import com.lothrazar.storagenetwork.util.UtilInventory;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -240,49 +244,48 @@ public class CapabilityConnectableAutoIO implements INBTSerializable<CompoundTag
     DimPos inventoryPos = connectable.getPos().offset(inventoryFace);
     return inventoryPos.getCapability(ForgeCapabilities.ITEM_HANDLER, inventoryFace.getOpposite());
   }
-
-  @Deprecated
-  @Override
-  public ItemStack extractNextStack(final int amtToRequestIn, boolean simulate) {
-    //op mode override
-    int amtToRequest = amtToRequestIn;
-    boolean operationMode = isOperationMode();
-    // If this storage is configured to only export from the network, do not
-    // extract from the storage, but abort immediately.
-    if (direction == EnumStorageDirection.OUT) {
-      return ItemStack.EMPTY;
-    }
-    if (inventoryFace == null) {
-      return ItemStack.EMPTY;
-    }
-    DimPos inventoryPos = connectable.getPos().offset(inventoryFace);
-    // Test whether the connected block has the IItemHandler capability
-    IItemHandler itemHandler = inventoryPos.getCapability(ForgeCapabilities.ITEM_HANDLER, inventoryFace.getOpposite());
-    if (itemHandler == null) {
-      return ItemStack.EMPTY;
-    }
-    for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
-      ItemStack stack = itemHandler.getStackInSlot(slot);
-      if (stack == null || stack.isEmpty()) {
-        continue;
-      }
-      // Ignore stacks that are filtered
-      if (filters.isStackFiltered(stack)) {
-        continue;
-      }
-      if (operationMode && filters.isAllowList) {
-        IItemStackMatcher matcher = filters.getFirstMatcher(stack);
-        //if filters are also in allow list mode
-        //then get the filter matching stack, and get the count of that filter
-        if (matcher != null && matcher.getStack().getCount() > 0) {
-          amtToRequest = matcher.getStack().getCount(); // the 63 haha
-        }
-      }
-      int extractSize = Math.min(amtToRequest, stack.getCount());
-      return itemHandler.extractItem(slot, extractSize, simulate);
-    }
-    return ItemStack.EMPTY;
-  }
+  //  @Deprecated
+  //  @Override
+  //  public ItemStack extractNextStack(final int amtToRequestIn, boolean simulate) {
+  //    //op mode override
+  //    int amtToRequest = amtToRequestIn;
+  //    boolean operationMode = isOperationMode();
+  //    // If this storage is configured to only export from the network, do not
+  //    // extract from the storage, but abort immediately.
+  //    if (direction == EnumStorageDirection.OUT) {
+  //      return ItemStack.EMPTY;
+  //    }
+  //    if (inventoryFace == null) {
+  //      return ItemStack.EMPTY;
+  //    }
+  //    DimPos inventoryPos = connectable.getPos().offset(inventoryFace);
+  //    // Test whether the connected block has the IItemHandler capability
+  //    IItemHandler itemHandler = inventoryPos.getCapability(ForgeCapabilities.ITEM_HANDLER, inventoryFace.getOpposite());
+  //    if (itemHandler == null) {
+  //      return ItemStack.EMPTY;
+  //    }
+  //    for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+  //      ItemStack stack = itemHandler.getStackInSlot(slot);
+  //      if (stack == null || stack.isEmpty()) {
+  //        continue;
+  //      }
+  //      // Ignore stacks that are filtered
+  //      if (filters.isStackFiltered(stack)) {
+  //        continue;
+  //      }
+  //      if (operationMode && filters.isAllowList) {
+  //        IItemStackMatcher matcher = filters.getFirstMatcher(stack);
+  //        //if filters are also in allow list mode
+  //        //then get the filter matching stack, and get the count of that filter
+  //        if (matcher != null && matcher.getStack().getCount() > 0) {
+  //          amtToRequest = matcher.getStack().getCount(); // the 63 haha
+  //        }
+  //      }
+  //      int extractSize = Math.min(amtToRequest, stack.getCount());
+  //      return itemHandler.extractItem(slot, extractSize, simulate);
+  //    }
+  //    return ItemStack.EMPTY;
+  //  }
 
   @Override
   public boolean isStockMode() {
@@ -310,7 +313,7 @@ public class CapabilityConnectableAutoIO implements INBTSerializable<CompoundTag
       return true;
     }
     // TODO: Investigate whether the operation limiter should consider the filter toggles
-    int countYourItemInNetwork = master.nw.getAmount(new ItemStackMatcher(operationStack, filters.tags, filters.nbt));
+    int countYourItemInNetwork = master.getNetwork().getAmount(new ItemStackMatcher(operationStack, filters.tags, filters.nbt));
     switch (OpCompareType.get(operationType)) {
       case EQUAL:
         return countYourItemInNetwork == operationLimit;
@@ -325,7 +328,7 @@ public class CapabilityConnectableAutoIO implements INBTSerializable<CompoundTag
   }
 
   @Override
-  public boolean runNow(DimPos connectablePos, TileMain main) {
+  public boolean canRunNow(DimPos connectablePos, TileMain main) {
     int speedUpgrades = upgrades.getUpgradesOfType(SsnRegistry.Items.SPEED_UPGRADE.get());
     int slowUpgrades = upgrades.getUpgradesOfType(SsnRegistry.Items.SLOW_UPGRADE.get());
     int speedRatio = IO_DEFAULT_SPEED; // no upgrades
@@ -366,4 +369,107 @@ public class CapabilityConnectableAutoIO implements INBTSerializable<CompoundTag
   }
 
   public void extractFromSlot(int slot) {}
+
+  @Override
+  public RequestBatch runExport(TileMain main) {
+    if (this.ioDirection() != EnumStorageDirection.OUT) { // TODO: redundant?
+      return null;
+    }
+    RequestBatch requestBatch = new RequestBatch();
+    for (IItemStackMatcher matcher : this.getAutoExportList()) {
+      if (matcher.getStack().isEmpty()) {
+        continue;
+      }
+      Request request = new Request(this);
+      // default amt to request. can be overriden by other upgrades
+      // check operations upgrade for export
+      boolean stockMode = this.isStockMode();
+      if (stockMode) {
+        StorageNetworkMod.log("stockMode == TRUE ; updateExports: attempt " + matcher.getStack());
+        // STOCK upgrade means
+        try {
+          DimPos inventoryPos = connectable.getPos().offset(inventoryFace);
+          IItemHandler targetInventory = inventoryPos.getCapability(ForgeCapabilities.ITEM_HANDLER, inventoryFace.getOpposite());
+          // request with false to see how many even exist in there.
+          int stillNeeds = UtilInventory.containsAtLeastHowManyNeeded(targetInventory, matcher.getStack(),
+              matcher.getStack().getCount());
+          if (stillNeeds == 0) {
+            // they dont need any more, they have the stock they need
+            StorageNetworkMod.log("stockMode upgrade finishing transaction");
+            continue;
+          }
+          request.setCount(Math.min(stillNeeds, request.getCount()));
+          StorageNetworkMod.log("updateExports stock mode edited value: amtToRequest = " + request.getCount());
+        }
+        catch (Throwable e) {
+          StorageNetworkMod.LOGGER.error("Error thrown from a connected block" + e);
+        }
+      }
+      if (matcher.getStack().isEmpty() || request.getCount() == 0) {
+        // either the thing is empty or we are requesting none
+        continue;
+      }
+      requestBatch.put(matcher.getStack().getItem(), request);
+    }
+    //
+    return requestBatch;
+  }
+
+  @Override
+  public void runImport(TileMain main) {
+    if (this.ioDirection() != EnumStorageDirection.IN) { // TODO: redundant?
+      return;
+    }
+    IItemHandler itemHandler = this.getItemHandler();
+    if (itemHandler == null) {
+      return;
+    }
+    for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+      if (itemHandler.getStackInSlot(slot).isEmpty()) {
+        continue;
+      }
+      ItemStack stackCurrent = itemHandler.getStackInSlot(slot).copy();
+      // Ignore stacks that are filtered
+      if (this.getFilters() == null || !this.getFilters().isStackFiltered(stackCurrent)) {
+        if (this.isStockMode()) {
+          int filterSize = this.getFilters().getStackCount(stackCurrent);
+          DimPos inventoryPos = connectable.getPos().offset(inventoryFace);
+          IItemHandler targetInventory = inventoryPos.getCapability(ForgeCapabilities.ITEM_HANDLER, inventoryFace.getOpposite());
+          //request with false to see how many even exist in there.
+          int chestHowMany = UtilInventory.countHowMany(targetInventory, stackCurrent);
+          //so if chest=37 items of that kind
+          //and the filter is say filterSize == 20
+          //we SHOULD import 37
+          //as we want the STOCK of the chest to not go less than the filter number , just down to it
+          if (chestHowMany > filterSize) {
+            int realSize = Math.min(chestHowMany - filterSize, 64);
+            StorageNetworkMod.log(" : stock mode import  realSize = " + realSize);
+            stackCurrent.setCount(realSize);
+          }
+          else {
+            StorageNetworkMod.log(" : stock mode CANCEL: ITS NOT ENOUGH chestHowMany <= filter size ");
+            continue;
+          }
+        }
+        int extractSize = Math.min(this.getTransferRate(), stackCurrent.getCount());
+        ItemStack stackToImport = itemHandler.extractItem(slot, extractSize, true); //simulate to grab a reference
+        if (stackToImport.isEmpty()) {
+          continue; //continue back to itemHandler
+        }
+        // Then try to insert the stack into this masters network and store the number of remaining items in the stack
+        int countUnmoved = main.insertStack(stackToImport, true);
+        // Calculate how many items in the stack actually got moved
+        int countMoved = stackToImport.getCount() - countUnmoved;
+        if (countMoved <= 0) {
+          continue; //continue back to itemHandler
+        }
+        // Alright, simulation says we're good, let's do it!
+        // First extract from the storage
+        ItemStack actuallyExtracted = itemHandler.extractItem(slot, countMoved, false);
+        // Then insert into our network
+        main.insertStack(actuallyExtracted, false);
+        break; // break out of itemHandler loop, done processing this cable, so move to next
+      } //end of checking on filter for this stack
+    }
+  }
 }

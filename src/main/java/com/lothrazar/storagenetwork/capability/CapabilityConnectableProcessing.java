@@ -92,8 +92,7 @@ public class CapabilityConnectableProcessing implements INBTSerializable<Compoun
   }
 
   @Override
-  public boolean runNow(TileMain main) {
-    StorageNetworkMod.log("Run Now processing cable ");
-    return false;
+  public void execute(TileMain main) {
+    StorageNetworkMod.log("Run Now processing cable; " + main + "..." + this);
   }
 }

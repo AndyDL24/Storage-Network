@@ -1,7 +1,8 @@
 package com.lothrazar.storagenetwork.block.cable.processing;
 
+import com.lothrazar.storagenetwork.api.IConnectableItemProcessing;
 import com.lothrazar.storagenetwork.block.TileCableWithFacing;
-import com.lothrazar.storagenetwork.capability.CapabilityConnectableLink;
+import com.lothrazar.storagenetwork.capability.CapabilityConnectableProcessing;
 import com.lothrazar.storagenetwork.registry.SsnRegistry;
 import com.lothrazar.storagenetwork.registry.StorageNetworkCapabilities;
 import net.minecraft.core.BlockPos;
@@ -15,12 +16,12 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class TileCableProcess extends TileCableWithFacing {
 
-  protected CapabilityConnectableLink itemStorage;
+  protected CapabilityConnectableProcessing itemStorage;
   private ProcessRequestModel processModel = new ProcessRequestModel();
 
   public TileCableProcess(BlockPos pos, BlockState state) {
     super(SsnRegistry.Tiles.PROCESS_KABEL.get(), pos, state);
-    this.itemStorage = new CapabilityConnectableLink(this);
+    this.itemStorage = new CapabilityConnectableProcessing(this);
   }
 
   @Override
@@ -45,8 +46,8 @@ public class TileCableProcess extends TileCableWithFacing {
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-    if (capability == StorageNetworkCapabilities.CONNECTABLE_ITEM_STORAGE_CAPABILITY) {
-      LazyOptional<CapabilityConnectableLink> cap = LazyOptional.of(() -> itemStorage);
+    if (capability == StorageNetworkCapabilities.PROCESSING_CAPABILITY) {
+      LazyOptional<IConnectableItemProcessing> cap = LazyOptional.of(() -> itemStorage);
       return cap.cast();
     }
     return super.getCapability(capability, facing);

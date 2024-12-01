@@ -26,12 +26,14 @@ public class UtilConnections {
     return true;
   }
 
+  // TODO: block tag? 
   public static boolean isCableOverride(BlockState facingState) {
     return facingState.is(SsnRegistry.Blocks.MASTER.get())
         || facingState.is(SsnRegistry.Blocks.EXCHANGE.get())
         || facingState.is(SsnRegistry.Blocks.COLLECTOR.get())
         || facingState.is(SsnRegistry.Blocks.INVENTORY.get())
         || facingState.is(SsnRegistry.Blocks.REQUEST.get())
+        || facingState.is(SsnRegistry.Blocks.REQUEST_EXPANDED.get())
         || facingState.is(SsnRegistry.Blocks.KABEL.get());
   }
 

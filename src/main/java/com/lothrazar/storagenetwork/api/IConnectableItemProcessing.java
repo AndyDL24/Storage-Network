@@ -11,8 +11,6 @@ import net.minecraft.core.Direction;
  */
 public interface IConnectableItemProcessing {
 
-
-
   Direction facingInventory();
 
   /**
@@ -24,17 +22,7 @@ public interface IConnectableItemProcessing {
 
   void setPriority(int value);
 
-  /**
-   * Called every tick to see if an operation should be processed now, i.e. this can be used to add cooldown times or disable operations via redstone signal.
-   *
-   * @param connectablePos
-   *          The position of your block, including the world
-   * @param main
-   *          The network main. Use this to e.g. query amount of items.
-   * @return Whether or not this IConnectableLink should be processed this tick.
-   */
-  boolean runNow(TileMain main);
-
+  void execute(TileMain main);
   /**
    * TODO:
    * 

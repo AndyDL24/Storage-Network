@@ -12,6 +12,6 @@
 
 		,"1.11.2":"Ported the Cable Facades feature (from Minecraft 1.12.2), so that you can shift-left-click with a block on a cable to hide it with a facade.  Disable this feature or ignore certain blocks with the config file"
 		,"1.11.3":"Fixed item tooltips not rendering in Storage Remote.  Fixed visual rendering and text errors inside of import/export cables using the 'operation upgrade'"
-		,"1.12.0":"Added new blocks to support large monitors and large GUI Scale resolutions, the Expanded Request Table and the Expanded Remote"
+		,"1.12.0":"Added new blocks to support large monitors and large GUI Scale resolutions, the Expanded Request Table and the Expanded Remote.  Import and Export cable changes: main transactions are now executed inside the cable capabilities, meaning the main root node is doing less central work so overall the network has less wasted cycles."
 	}
 }
