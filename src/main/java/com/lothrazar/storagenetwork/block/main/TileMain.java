@@ -1,7 +1,11 @@
 package com.lothrazar.storagenetwork.block.main;
 
 import com.lothrazar.storagenetwork.StorageNetworkMod;
-import com.lothrazar.storagenetwork.api.*;
+import com.lothrazar.storagenetwork.api.DimPos;
+import com.lothrazar.storagenetwork.api.EnumStorageDirection;
+import com.lothrazar.storagenetwork.api.IConnectable;
+import com.lothrazar.storagenetwork.api.IConnectableItemAutoIO;
+import com.lothrazar.storagenetwork.api.IConnectableItemProcessing;
 import com.lothrazar.storagenetwork.capability.handler.ItemStackMatcher;
 import com.lothrazar.storagenetwork.registry.SsnRegistry;
 import com.lothrazar.storagenetwork.registry.StorageNetworkCapabilities;

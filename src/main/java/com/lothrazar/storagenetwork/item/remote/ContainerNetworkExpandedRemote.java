@@ -1,5 +1,8 @@
 package com.lothrazar.storagenetwork.item.remote;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.commons.lang3.tuple.Triple;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.api.DimPos;
 import com.lothrazar.storagenetwork.block.main.TileMain;
@@ -12,9 +15,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.apache.commons.lang3.tuple.Triple;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ContainerNetworkExpandedRemote extends ContainerNetwork {
 

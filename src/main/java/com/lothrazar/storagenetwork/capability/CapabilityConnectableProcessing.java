@@ -15,7 +15,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class CapabilityConnectableProcessing implements INBTSerializable<CompoundTag>, IConnectableItemProcessing {
 
-
   public static class Factory implements Callable<IConnectableItemProcessing> {
 
     @Override
