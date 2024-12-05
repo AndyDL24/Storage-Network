@@ -41,7 +41,7 @@ import com.lothrazar.storagenetwork.item.ItemUpgrade;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkCraftingRemote;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkExpandedRemote;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkRemote;
-import com.lothrazar.storagenetwork.item.remote.ItemStorageCraftingRemote;
+import com.lothrazar.storagenetwork.item.remote.ItemRemote;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -100,12 +100,12 @@ public class SsnRegistry {
     public static final RegistryObject<ItemUpgrade> STOCK_UPGRADE = ITEMS.register("stock_upgrade", () -> new ItemUpgrade(new Item.Properties()));
     public static final RegistryObject<ItemUpgrade> OP_U = ITEMS.register("operation_upgrade", () -> new ItemUpgrade(new Item.Properties()));
     public static final RegistryObject<ItemUpgrade> SINGLE_UPGRADE = ITEMS.register("single_upgrade", () -> new ItemUpgrade(new Item.Properties()));
-    public static final RegistryObject<ItemStorageCraftingRemote> INVENTORY_REMOTE = ITEMS.register("inventory_remote", () -> new ItemStorageCraftingRemote(new Item.Properties()));
-    public static final RegistryObject<ItemStorageCraftingRemote> CRAFTING_REMOTE = ITEMS.register("crafting_remote", () -> new ItemStorageCraftingRemote(new Item.Properties()));
+    public static final RegistryObject<ItemRemote> INVENTORY_REMOTE = ITEMS.register("inventory_remote", () -> new ItemRemote(new Item.Properties()));
+    public static final RegistryObject<ItemRemote> CRAFTING_REMOTE = ITEMS.register("crafting_remote", () -> new ItemRemote(new Item.Properties()));
     public static final RegistryObject<Item> PICKER_REMOTE = ITEMS.register("picker_remote", () -> new ItemPicker(new Item.Properties()));
     public static final RegistryObject<ItemCollector> COLLECTOR_REMOTE = ITEMS.register("collector_remote", () -> new ItemCollector(new Item.Properties()));
     public static final RegistryObject<Item> BUILDER_REMOTE = ITEMS.register("builder_remote", () -> new ItemBuilder(new Item.Properties()));
-    public static final RegistryObject<Item> EXPANDED_REMOTE = ITEMS.register("expanded_remote", () -> new ItemStorageCraftingRemote(new Item.Properties()));
+    public static final RegistryObject<ItemRemote> EXPANDED_REMOTE = ITEMS.register("expanded_remote", () -> new ItemRemote(new Item.Properties()));
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)

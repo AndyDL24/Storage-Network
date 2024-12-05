@@ -56,42 +56,42 @@ public class ScreenNetworkRemote extends AbstractNetworkScreen<ContainerNetworkR
 
   @Override
   public boolean getDownwards() {
-    return ItemStorageCraftingRemote.getDownwards(remote);
+    return ItemRemote.getDownwards(remote);
   }
 
   @Override
   public void setDownwards(boolean val) {
-    ItemStorageCraftingRemote.setDownwards(remote, val);
+    ItemRemote.setDownwards(remote, val);
   }
 
   @Override
   public EnumSortType getSort() {
-    return ItemStorageCraftingRemote.getSort(remote);
+    return ItemRemote.getSort(remote);
   }
 
   @Override
   public void setSort(EnumSortType val) {
-    ItemStorageCraftingRemote.setSort(remote, val);
+    ItemRemote.setSort(remote, val);
   }
 
   @Override
   public boolean isJeiSearchSynced() {
-    return ItemStorageCraftingRemote.isJeiSearchSynced(remote);
+    return ItemRemote.isJeiSearchSynced(remote);
   }
 
   @Override
   public void setJeiSearchSynced(boolean val) {
-    ItemStorageCraftingRemote.setJeiSearchSynced(remote, val);
+    ItemRemote.setJeiSearchSynced(remote, val);
   }
 
   @Override
   public boolean getAutoFocus() {
-    return ItemStorageCraftingRemote.getAutoFocus(remote);
+    return ItemRemote.getAutoFocus(remote);
   }
 
   @Override
   public void setAutoFocus(boolean b) {
-    ItemStorageCraftingRemote.setAutoFocus(remote, b);
+    ItemRemote.setAutoFocus(remote, b);
   }
 
   @Override

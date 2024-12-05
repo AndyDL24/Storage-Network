@@ -5,7 +5,7 @@ import com.lothrazar.storagenetwork.api.EnumSortType;
 import com.lothrazar.storagenetwork.api.ITileNetworkSync;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkCraftingRemote;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkRemote;
-import com.lothrazar.storagenetwork.item.remote.ItemStorageCraftingRemote;
+import com.lothrazar.storagenetwork.item.remote.ItemRemote;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -49,20 +49,20 @@ public class SettingsSyncMessage {
       }
       else if (player.containerMenu instanceof ContainerNetworkCraftingRemote remoteContainer) {
         ItemStack stackPlayerHeld = remoteContainer.getRemote();
-        if (stackPlayerHeld.getItem() instanceof ItemStorageCraftingRemote) {
-          ItemStorageCraftingRemote.setSort(stackPlayerHeld, message.sort);
-          ItemStorageCraftingRemote.setDownwards(stackPlayerHeld, message.direction);
-          ItemStorageCraftingRemote.setJeiSearchSynced(stackPlayerHeld, message.jeiSync);
-          ItemStorageCraftingRemote.setAutoFocus(stackPlayerHeld, message.autoFocus);
+        if (stackPlayerHeld.getItem() instanceof ItemRemote) {
+          ItemRemote.setSort(stackPlayerHeld, message.sort);
+          ItemRemote.setDownwards(stackPlayerHeld, message.direction);
+          ItemRemote.setJeiSearchSynced(stackPlayerHeld, message.jeiSync);
+          ItemRemote.setAutoFocus(stackPlayerHeld, message.autoFocus);
         }
       }
       else if (player.containerMenu instanceof ContainerNetworkRemote rcc) {
         ItemStack stackPlayerHeld = rcc.getRemote();
-        if (stackPlayerHeld.getItem() instanceof ItemStorageCraftingRemote) {
-          ItemStorageCraftingRemote.setSort(stackPlayerHeld, message.sort);
-          ItemStorageCraftingRemote.setDownwards(stackPlayerHeld, message.direction);
-          ItemStorageCraftingRemote.setJeiSearchSynced(stackPlayerHeld, message.jeiSync);
-          ItemStorageCraftingRemote.setAutoFocus(stackPlayerHeld, message.autoFocus);
+        if (stackPlayerHeld.getItem() instanceof ItemRemote) {
+          ItemRemote.setSort(stackPlayerHeld, message.sort);
+          ItemRemote.setDownwards(stackPlayerHeld, message.direction);
+          ItemRemote.setJeiSearchSynced(stackPlayerHeld, message.jeiSync);
+          ItemRemote.setAutoFocus(stackPlayerHeld, message.autoFocus);
         }
       }
     });
