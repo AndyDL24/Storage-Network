@@ -2,10 +2,12 @@ package com.lothrazar.storagenetwork.jei;
 
 import java.util.Optional;
 import com.lothrazar.storagenetwork.StorageNetworkMod;
+import com.lothrazar.storagenetwork.block.expand.ContainerNetworkInventoryExpanded;
 import com.lothrazar.storagenetwork.block.request.ContainerNetworkCraftingTable;
 import com.lothrazar.storagenetwork.gui.ISearchHandler;
 import com.lothrazar.storagenetwork.gui.NetworkWidget;
 import com.lothrazar.storagenetwork.item.remote.ContainerNetworkCraftingRemote;
+import com.lothrazar.storagenetwork.item.remote.ContainerNetworkExpandedRemote;
 import com.lothrazar.storagenetwork.registry.SsnRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -44,6 +46,31 @@ public class JeiPlugin implements IModPlugin {
       @Override
       public Optional<MenuType<ContainerNetworkCraftingTable>> getMenuType() {
         return Optional.of(SsnRegistry.Menus.REQUEST.get());
+      }
+    }, RecipeTypes.CRAFTING);
+    //expanded
+    registration.addRecipeTransferHandler(new RequestRecipeTransferHandler<ContainerNetworkInventoryExpanded>() {
+
+      @Override
+      public Class<? extends ContainerNetworkInventoryExpanded> getContainerClass() {
+        return ContainerNetworkInventoryExpanded.class;
+      }
+
+      @Override
+      public Optional<MenuType<ContainerNetworkInventoryExpanded>> getMenuType() {
+        return Optional.of(SsnRegistry.Menus.REQUEST_EXPANDED.get());
+      }
+    }, RecipeTypes.CRAFTING);
+    registration.addRecipeTransferHandler(new RequestRecipeTransferHandler<ContainerNetworkExpandedRemote>() {
+
+      @Override
+      public Class<? extends ContainerNetworkExpandedRemote> getContainerClass() {
+        return ContainerNetworkExpandedRemote.class;
+      }
+
+      @Override
+      public Optional<MenuType<ContainerNetworkExpandedRemote>> getMenuType() {
+        return Optional.of(SsnRegistry.Menus.EXPANDED_REMOTE.get());
       }
     }, RecipeTypes.CRAFTING);
     //remote

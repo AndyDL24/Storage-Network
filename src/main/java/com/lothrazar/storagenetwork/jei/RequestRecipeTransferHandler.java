@@ -39,7 +39,7 @@ public abstract class RequestRecipeTransferHandler<C extends AbstractContainerMe
 
   public static CompoundTag recipeToTag(AbstractContainerMenu container, IRecipeSlotsView recipeSlots) {
     CompoundTag nbt = new CompoundTag();
-    //    Map<Integer, ? extends IGuiIngredient<ItemStack>> inputs = recipeSlots.getItemStacks().getGuiIngredients();
+
     List<IRecipeSlotView> slotsViewList = recipeSlots.getSlotViews();
     for (Slot slot : container.slots) {
       if (slot.container instanceof net.minecraft.world.inventory.CraftingContainer) {
